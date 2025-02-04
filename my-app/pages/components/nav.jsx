@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link, useNavigate } from "react-router-dom";
 export default function Head() {
   return (
     <nav className="bg-gradient-to-r from-blue-500 to-cyan-500 p-4 flex justify-between items-center">
@@ -12,8 +12,8 @@ export default function Head() {
         <span className="text-white text-lg font-bold">AQUA QUEST</span>
       </div>
       <div className="space-x-6 text-white font-semibold">
-        <a href="#" className="hover:underline">DOWNLOAD</a>
-        <a href="#" className="hover:underline">ABOUT US</a>
+        <a href="/" className="hover:underline">DOWNLOAD</a>
+        <a href="/about" className="hover:underline">ABOUT US</a>
       </div>
     </nav>
   );
