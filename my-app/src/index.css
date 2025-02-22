@@ -1,4 +1,24 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700;900&display=swap');
+
+body {
+    font-family: 'Raleway', sans-serif;
+}
+
+h1, h2, h3, button, a, p, li {
+    font-family: 'Raleway', sans-serif;
+}
+
+
+@keyframes floating {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); } 
+  100% { transform: translateY(0); }  
+}
+
+.animate-floating {
+  animation: floating 3s ease-in-out infinite;
+}
 
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;

@@ -1,143 +1,161 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import Head from "./components/nav";
-
-const FlipCard = ({ imageSrc, frontText, frontDesc, backText }) => {
-    const [isFlipped, setIsFlipped] = useState(false);
-
-    return (
-        <div
-            className="w-64 h-60 cursor-pointer flex flex-col items-center relative transition-transform hover:scale-105"
-            onClick={() => setIsFlipped(!isFlipped)}
-        >
-            {/* Larger Image Stays in Front */}
-            <div className="absolute -top-12 w-20 h-20 z-10">
-                <img src={imageSrc} alt="Feature Icon" className="w-full h-full" />
-            </div>
-
-            {/* Flip Animation */}
-            <motion.div
-                className="relative w-full h-full bg-blue-500 text-white p-6 rounded-lg flex flex-col items-center text-center shadow-lg transition-all"
-                animate={{ rotateY: isFlipped ? 180 : 0 }}
-                transition={{ duration: 0.5 }}
-            >
-                {!isFlipped ? (
-                    <>
-                        <p className="text-lg font-semibold mt-16">{frontText}</p>
-                        <p className="text-sm mt-2">{frontDesc}</p>
-                    </>
-                ) : (
-                    <motion.p className="text-sm mt-4 px-2" style={{ rotateY: 180 }}>
-                        {backText}
-                    </motion.p>
-                )}
-            </motion.div>
-        </div>
-    );
-};
+import React from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation } from "swiper/modules";
+import { useNavigate } from "react-router-dom";
+import "swiper/css";
+import "swiper/css/navigation";
+import Navbar from "./components/navbar";
+import Footer from "./components/footer";
 
 export default function About() {
-    return (
-        <div className="min-h-screen bg-white">
-            <Head />
-            
-            {/* 🌊 Banner Section */}
+  const navigate = useNavigate();
+  const predictiveFeatures = [
+    {
+      title: "📊 Smart Water Usage Predictions",
+      description:
+        "Our AI-powered system predicts your monthly water bill based on past consumption. Get insights on how much you'll likely pay and adjust your usage accordingly.",
+      image: "/images/analysis1.png",
+    },
+    {
+      title: "🔍 Personalized Insights",
+      description:
+        "Receive tailored advice on how to optimize your water consumption, reduce waste, and lower your bills with our advanced analytics dashboard.",
+      image: "/images/analysis2.png",
+    },
+    {
+      title: "📉 Cost-Saving Strategies",
+      description:
+        "See where you can save! Our system highlights peak usage times and offers actionable suggestions to help you cut down on unnecessary expenses.",
+      image: "/images/analysis3.png",
+    },
+  ];
 
-            <div className="w-full bg-white p-0">
-                <div className="w-full h-[300px] bg-white shadow-lg overflow-hidden border border-gray-200">
-                    <div className="relative w-full h-full flex items-center justify-center">
-                        <img 
-                            src="/images/banner.jpg" 
-                            alt="Banner" 
-                            className="absolute w-full h-full object-cover"
-                        />
-                        <div className="relative text-center p-4">
-                            <h1 className="text-white text-3xl font-bold drop-shadow-md">
-                                Welcome to Aqua Quest!
-                                <br />
-                                <span className="text-lg font-normal">
-                                    Your trusted companion in managing and understanding your water bills!
-                                </span>
-                            </h1>
-                        </div>
-                    </div>
-                </div>
+  return (
+    <div className="min-h-screen bg-white">
+      <Navbar />
+      <div className="w-screen min-h-screen bg-white flex flex-col items-center">
+        {/* 🏞️ Banner Section */}
+        <div className="w-full h-[800px] bg-white shadow-lg overflow-hidden border border-gray-200 relative">
+          <img
+            src="/images/aboutus.png"
+            alt="Banner"
+            className="absolute w-full h-full object-cover"
+          />
+          <div className="absolute w-full h-full bg-black opacity-10"></div>
+          <div className="relative w-full h-full flex items-center justify-center px-20">
+            <div className="w-1/2 flex flex-col items-center text-center justify-center">
+              <h1 className="text-black text-6xl font-extrabold drop-shadow-md">
+                Our Mission
+              </h1>
+              <p className="text-black text-2xl font-bold mt-2">
+                Aqua Quest is designed to empower users with smart water
+                consumption analytics and an engaging game that raises awareness
+                about water pollution. Manage your water usage with AI-powered
+                predictions and battle water pollution monsters in an
+                interactive adventure!
+              </p>
+              <button
+                onClick={() => navigate("/")}
+                className="mt-4 px-6 py-3 bg-blue-700 text-black font-semibold rounded-lg shadow-md hover:bg-blue-900 transition"
+              >
+                Use Our App
+              </button>
             </div>
-
-            {/* 💧 Features Section */}
-            <div className="w-full flex justify-center mt-12">
-                <div className="w-full max-w-6xl">
-                    <h2 className="text-3xl font-bold text-gray-800 text-center mb-6">
-                        Key Features
-                    </h2>
-
-                    {/* Grid: Ensures All Cards Fit in One Row */}
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 justify-center">
-                        <FlipCard 
-                            imageSrc="/images/water.png"
-                            frontText="Analyze Your Water Usage"
-                            frontDesc="Track and optimize your water consumption."
-                            backText="Monitor daily, weekly, and monthly water usage to identify areas of excessive consumption."
-                        />
-
-                        <FlipCard 
-                            imageSrc="/images/Bill.png"
-                            frontText="Predict Future Bills"
-                            frontDesc="Estimate your next water bill easily."
-                            backText="Based on historical data, Aqua Quest forecasts your future bills. Plan your budget more efficiently!"
-                        />
-
-                        <FlipCard 
-                            imageSrc="/images/pig.png"
-                            frontText="Save On Your Bill"
-                            frontDesc="Cut costs with smart water-saving tips."
-                            backText="Get tailored advice on how to use water efficiently. Fix leaks, use appliances wisely, and adjust habits!"
-                        />
-
-                        <FlipCard 
-                            imageSrc="/images/Sword.png"
-                            frontText="Aqua Quest: Manage Your Water Bills"
-                            frontDesc="Make bill management simple and fun!"
-                            backText="Aqua Quest not only tracks your water consumption but also gamifies it. Earn points and unlock achievements!"
-                        />
-                    </div>
-                </div>
-            </div>
-
-            {/* ❓ Why Choose Aqua Quest? */}
-            <div className="w-full flex justify-center mt-16 bg-blue-100">
-                <div className="w-full max-w-6xl">
-                    <h2 className="text-3xl font-bold text-gray-800 text-center mt-12 mb-6">
-                        Why Choose Aqua Quest?
-                    </h2>
-                    <p className="text-gray-600 text-center mb-12">
-                        Aqua Quest is more than just a billing tool—it's an interactive way to learn, save, and manage your water usage efficiently.
-                    </p>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-center">
-                        <FlipCard 
-                            imageSrc="/images/smart.png"
-                            frontText="Smart Insights"
-                            frontDesc="Get real-time usage analytics."
-                            backText="With Aqua Quest's smart insights, you receive up-to-date data on your water usage, highlighting inefficiencies."
-                        />
-
-                        <FlipCard 
-                            imageSrc="/images/game.png"
-                            frontText="Interactive & Fun"
-                            frontDesc="Turn water management into a game!"
-                            backText="Aqua Quest incorporates interactive elements, challenges, and rewards to make sustainability fun and engaging!"
-                        />
-
-                        <FlipCard 
-                            imageSrc="/images/support.png"
-                            frontText="24/7 Support"
-                            frontDesc="We're here to help anytime."
-                            backText="Our dedicated support team is available 24/7 to assist you with billing predictions, troubleshooting, and more!"
-                        />
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
-    );
+
+        {/* 📊 Predictive Analysis Slideshow */}
+        <div className="w-screen h-[700px] flex flex-col items-center justify-center">
+          <h2 className="text-4xl font-extrabold text-blue-900 text-center mt-8 mb-4">
+            Predict Your Water Bill with AI
+          </h2>
+          <p className="text-gray-700 text-lg text-center max-w-3xl mt-2">
+            Stay ahead of your water expenses with our AI-driven predictive
+            analysis. Our system helps you estimate monthly costs, detect high
+            usage trends, and suggest ways to save.
+          </p>
+
+          <Swiper
+            modules={[Autoplay, Navigation]}
+            autoplay={{ delay: 3000 }}
+            loop={true}
+            spaceBetween={50}
+            slidesPerView={1}
+            navigation={{
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+            }}
+            className="w-full h-full mt-2 relative"
+          >
+            {predictiveFeatures.map((feature, index) => (
+              <SwiperSlide
+                key={index}
+                className="w-full h-[600px] flex items-center justify-center px-10"
+              >
+                <div className="w-full h-full flex flex-row items-center justify-end">
+                  <div className="m-20 w-1/2 text-left">
+                    <h3 className="text-3xl font-bold text-blue-800">
+                      {feature.title}
+                    </h3>
+                    <p className="mt-4 text-lg text-black">
+                      {feature.description}
+                    </p>
+                  </div>
+                  <div className="w-1/2 flex justify-end">
+                    <img
+                      src={feature.image}
+                      alt={feature.title}
+                      style={{ width: "800px", height: "600px" }}
+                      className="object-contain mix-blend-multiply"
+                    />
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+
+        {/* 🎮 Fighting Game Against Water Pollution */}
+        <div className="w-screen bg-blue-100 py-16 px-6 flex flex-col items-center">
+          <h2 className="text-4xl font-extrabold text-blue-900 text-center mt-8 mb-4">
+            Battle Against Water Pollution!
+          </h2>
+          <p className="text-black text-lg text-center max-w-3xl mt-4">
+            Engage in an exciting adventure where you fight against pollution
+            monsters and learn how to protect our water sources. Complete
+            missions, level up, and become an environmental hero!
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 max-w-5xl">
+            <div className="bg-blue-200 p-6 rounded-lg shadow-md text-center transition-all transform hover:scale-105 hover:bg-blue-300">
+              <h3 className="text-xl font-bold text-blue-800">
+                👹 Defeat Pollution Monsters
+              </h3>
+              <p className="mt-2 text-black">
+                Face off against toxic waste beasts, oil spill serpents, and
+                plastic invaders in thrilling battles!
+              </p>
+            </div>
+            <div className="bg-blue-200 p-6 rounded-lg shadow-md text-center transition-all transform hover:scale-105 hover:bg-blue-300">
+              <h3 className="text-xl font-bold text-blue-800">
+                🏆 Earn Rewards & Achievements
+              </h3>
+              <p className="mt-2 text-black">
+                Complete levels, earn points, and unlock rewards as you learn
+                how to save water!
+              </p>
+            </div>
+          </div>
+
+          <button
+            onClick={() => navigate("/")}
+            className="mt-6 px-6 py-3 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-800 transition"
+          >
+            Play the Game
+          </button>
+        </div>
+      </div>
+      <Footer />
+    </div>
+  );
 }
