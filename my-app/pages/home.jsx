@@ -10,7 +10,7 @@ export default function Home() {
     <div className="min-h-screen bg-blue-100 flex flex-col">
       <Navbar />
 
-      <div className="w-full h-[800px] bg-white shadow-lg overflow-hidden border border-gray-200 relative">
+      <div className="w-full h-auto lg:h-[700px] bg-white shadow-lg overflow-hidden border border-gray-200 relative">
         {/* Background Image */}
         <img
           src="/images/homebg.png"
@@ -18,14 +18,15 @@ export default function Home() {
           className="absolute w-full h-full object-cover"
         />
         <div className="absolute w-full h-full bg-black opacity-10"></div>
+
         {/* Content Wrapper */}
-        <div className="relative w-full h-full flex items-center px-20">
+        <div className="relative w-full h-full flex flex-col lg:flex-row items-center px-6 lg:px-20 py-10 lg:py-0">
           {/* Left Side: Text Content */}
-          <div className="ml-8 w-1/2 relative z-10">
-            <h1 className="text-black text-6xl font-extrabold drop-shadow-md">
-              Welcome to Aqua Quest!
-            </h1>
-            <p className="text-black text-lg font-bold mt-2">
+          <div className="w-full lg:w-1/2 text-center lg:text-left relative z-10 mt-10 lg:mt-32">
+            <h3 className="text-black text-4xl md:text-5xl lg:text-6xl font-extrabold drop-shadow-md">
+              Smart Predictions, Smarter Savings
+            </h3>
+            <p className="text-black text-md md:text-lg font-bold mt-2">
               Discover a smarter way to manage your water usage! Aqua Quest
               helps you predict your monthly water bill, save on costs, and
               learn about water conservation in an exciting and interactive way.
@@ -33,7 +34,7 @@ export default function Home() {
               your consumption—effortlessly.
             </p>
             <button
-              className="mt-4 px-6 py-3 bg-blue-700 text-black font-semibold rounded-lg shadow-md hover:bg-blue-900 transition"
+              className="mt-4 px-6 py-3 bg-blue-500 text-black font-semibold rounded-lg shadow-md hover:bg-blue-700 transition"
               onClick={() =>
                 document
                   .getElementById("download-section")
@@ -45,122 +46,124 @@ export default function Home() {
           </div>
 
           {/* Right Side: 3D Model */}
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full flex justify-center items-center overflow-visible z-10 animate-floating mt-16 ml-84">
-            <iframe
-              src="https://my.spline.design/untitled-5a1bca2e52f0e8655211a23264fc029b/"
-              width="100%"
-              height="100%"
-              frameBorder="0"
-              allowFullScreen
-              className="absolute"
-            ></iframe>
+          <div className="w-full lg:w-1/2 flex justify-center items-center mt-10 lg:mt-0">
+            <div className="w-[700px] h-[700px] sm:w-[800px] sm:h-800px] lg:w-[900px] lg:h-[900px]">
+              <iframe
+                src="https://my.spline.design/hand19copy-4e6083997cd6cca33be95744523a2734/"
+                width="100%"
+                height="100%"
+                frameBorder="0"
+                allowFullScreen
+                className="rounded-lg"
+              ></iframe>
+            </div>
           </div>
         </div>
       </div>
 
       {/* 📊 Smart Water Usage Predictions Section */}
-      <div className="w-full bg-white py-16 px-10 flex flex-col items-center">
-        <h2 className="text-4xl font-extrabold text-blue-900 text-center mb-6">
+      <div className="w-full bg-white py-16 px-6 lg:px-10 flex flex-col items-center">
+        <h2 className="text-3xl lg:text-4xl font-extrabold text-blue-900 text-center mb-6">
           Smart Water Usage Predictions
         </h2>
 
         {/* Features Grid Layout */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 w-full px-10">
-          {/* 📈 AI-Powered Bill Forecasts */}
-          <div className="p-6  rounded-lg transition-all transform hover:scale-105 flex flex-col items-center text-center w-full">
-            <div className="w-24 h-24 rounded-full bg-blue-100 flex items-center justify-center mb-4">
-              <img
-                src="/images/prediction.png"
-                alt="Bill Forecasts"
-                className="w-16 h-16 "
-              />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-6xl">
+          {[
+            {
+              img: "prediction.png",
+              title: "AI-Powered Bill Forecasts",
+              text: "Get precise water bill predictions based on your usage history.",
+            },
+            {
+              img: "tracking.png",
+              title: "Real-Time Usage Tracking",
+              text: "Monitor your daily water consumption with live analytics.",
+            },
+            {
+              img: "conservation.png",
+              title: "Smart Conservation Tips",
+              text: "Reduce water waste with AI-driven conservation suggestions.",
+            },
+            {
+              img: "budget.png",
+              title: "Data-Driven Budget Planning",
+              text: "Plan ahead and track your expenses with monthly reports.",
+            },
+          ].map((feature, index) => (
+            <div
+              key={index}
+              className="p-6 flex flex-col items-center text-center transition-all transform hover:scale-105"
+            >
+              <div className="w-40 h-40 bg-blue-100 flex items-center justify-center rounded-full mb-4">
+                <img
+                  src={`/images/${feature.img}`}
+                  alt={feature.title}
+                  className="w-32 h-32"
+                />
+              </div>
+              <h3 className="text-lg font-bold text-blue-800">
+                {feature.title}
+              </h3>
+              <p className="mt-2 text-gray-700">{feature.text}</p>
             </div>
-            <h3 className="text-lg font-bold text-blue-800">
-              {" "}
-              AI-Powered Bill Forecasts
-            </h3>
-            <p className="mt-2 text-gray-700">
-              Get precise water bill predictions based on your usage history,
-              ensuring no surprises in your monthly expenses.
-            </p>
-          </div>
-
-          {/* 📊 Real-Time Usage Tracking */}
-          <div className="p-6  rounded-lg transition-all transform hover:scale-105 flex flex-col items-center text-center w-full">
-            <div className="w-24 h-24 rounded-full bg-blue-100 flex items-center justify-center mb-4">
-              <img
-                src="/images/tracking.png"
-                alt="Usage Tracking"
-                className="w-16 h-16"
-              />
-            </div>
-            <h3 className="text-lg font-bold text-blue-800">
-              {" "}
-              Real-Time Usage Tracking
-            </h3>
-            <p className="mt-2 text-gray-700">
-              Monitor your daily water consumption with live analytics to better
-              understand and manage your usage.
-            </p>
-          </div>
-
-          {/* 💡 Smart Conservation Tips */}
-          <div className="p-6  rounded-lg transition-all transform hover:scale-105 flex flex-col items-center text-center w-full">
-            <div className="w-24 h-24 rounded-full bg-blue-100 flex items-center justify-center mb-4">
-              <img
-                src="/images/conservation.png"
-                alt="Conservation Tips"
-                className="w-16 h-16"
-              />
-            </div>
-            <h3 className="text-lg font-bold text-blue-800">
-              {" "}
-              Smart Conservation Tips
-            </h3>
-            <p className="mt-2 text-gray-700">
-              Reduce water waste with AI-driven conservation suggestions
-              tailored to your household's habits.
-            </p>
-          </div>
-
-          {/* 📥 Data-Driven Budget Planning */}
-          <div className="p-6  rounded-lg transition-all transform hover:scale-105 flex flex-col items-center text-center w-full">
-            <div className="w-24 h-24 rounded-full bg-blue-100 flex items-center justify-center mb-4">
-              <img
-                src="/images/budget.png"
-                alt="Budget Planning"
-                className="w-16 h-16"
-              />
-            </div>
-            <h3 className="text-lg font-bold text-blue-800">
-              {" "}
-              Data-Driven Budget Planning
-            </h3>
-            <p className="mt-2 text-gray-700">
-              Plan ahead and track your expenses with monthly usage reports and
-              spending insights.
-            </p>
-          </div>
+          ))}
         </div>
       </div>
-
       {/* 🎮 Water Pollution Fighting Game Section */}
-      <div className="w-screen bg-gradient-to-br from-blue-900 via-blue-650 to-blue-400 py-16 px-6 flex flex-col items-center">
-        <h2 className="text-4xl font-extrabold text-white text-center mb-4">
-          Water Pollution Fighting Game
+      <div className="w-full bg-gradient-to-br from-blue-900 via-blue-700 to-blue-500 py-16 px-6 flex flex-col items-center">
+        <h2 className="text-4xl md:text-5xl font-extrabold text-white text-center mb-6 drop-shadow-lg">
+          Join the Battle Against Water Pollution! 🌊💪
         </h2>
-        <p className="text-white text-lg text-center max-w-3xl">
-          Aqua Quest isn’t just about water bill predictions—it’s also a fun and
-          interactive way to learn about water conservation! Our game mode turns
-          environmental awareness into an exciting challenge where players
-          battle against pollution monsters that threaten clean water sources.
+
+        <p className="text-white text-lg text-center max-w-3xl mt-6">
+          Aqua Quest isn’t just about water bill predictions—it’s also an
+          exciting **adventure game**! Join forces to **defeat pollution
+          monsters** 🦠, **restore clean water sources**, and **become an
+          eco-warrior**! 🌱
         </p>
-        <p className="text-white text-lg text-center max-w-3xl mt-4">
-          As you progress through different levels, you’ll gain knowledge about
-          real-world water pollution issues, learn practical conservation tips,
-          and earn rewards for making eco-friendly choices. Experience the
-          thrill of saving the planet while having fun!
-        </p>
+
+        {/* Features Section */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10 text-center">
+          {[
+            {
+              img: "level.png",
+              title: "Explore Exciting Levels",
+              text: "Travel through different water environments and uncover hidden dangers!",
+            },
+            {
+              img: "monster.png",
+              title: "Defeat Pollution Monsters",
+              text: "Battle toxic waste creatures and save endangered marine life!",
+            },
+            {
+              img: "reward.png",
+              title: "Earn Eco-Rewards",
+              text: "Win badges and points for completing conservation challenges!",
+            },
+          ].map((feature, index) => (
+            <div key={index} className="flex flex-col items-center">
+              <img
+                src={`/images/${feature.img}`}
+                alt={feature.title}
+                className="w-32 h-32 mb-3"
+              />
+              <h3 className="text-xl font-bold text-white">{feature.title}</h3>
+              <p className="text-white text-sm mt-1">{feature.text}</p>
+            </div>
+          ))}
+        </div>
+
+        <button
+          className="mt-8 px-8 py-3 bg-green-400 text-black font-semibold text-lg rounded-lg shadow-md hover:bg-green-500 transition-all"
+          onClick={() =>
+            document
+              .getElementById("download-section")
+              .scrollIntoView({ behavior: "smooth" })
+          }
+        >
+          Play Now & Save Water! 🎮
+        </button>
       </div>
 
       {/* 📱 Download Section */}
