@@ -31,6 +31,15 @@ export default function Navbar() {
           </li>
           <li>
             <a
+              href="/ranking"
+              className="text-white px-6 py-3 rounded-lg transition-all duration-300 ease-in-out 
+                hover:bg-white hover:text-blue-700 hover:shadow-md hover:scale-105 active:scale-95"
+            >
+              Ranking
+            </a>
+          </li>
+          <li>
+            <a
               href="/about"
               className="text-white px-6 py-3 rounded-lg transition-all duration-300 ease-in-out 
                 hover:bg-white hover:text-blue-700 hover:shadow-md hover:scale-105 active:scale-95"

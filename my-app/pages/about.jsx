@@ -11,19 +11,19 @@ export default function About() {
   const navigate = useNavigate();
   const awarenessSlides = [
     {
-      title: "🚱 Global Water Crisis",
+      title: " Global Water Crisis",
       description:
         "Over 2 billion people lack access to safe drinking water. It's crucial to conserve and manage our water resources wisely.",
       image: "/images/watercrisis.png",
     },
     {
-      title: "🌍 Climate Change & Water Scarcity",
+      title: " Climate Change & Water Scarcity",
       description:
         "Rising temperatures and pollution are reducing our clean water supply. Small changes in our daily habits can make a big difference.",
       image: "/images/climatewater.png",
     },
     {
-      title: "💧 Preventing Water Pollution",
+      title: " Preventing Water Pollution",
       description:
         "Industrial waste, plastic pollution, and improper disposal of chemicals threaten our water sources. Awareness and action are needed now more than ever.",
       image: "/images/pollution.png",
@@ -82,10 +82,10 @@ export default function About() {
 
         {/* 💙 Why Choose Aqua Quest? */}
         <div className="w-full bg-blue-900 text-white py-16 px-6 flex flex-col items-center">
-          <h2 className="text-4xl font-extrabold text-center">💙 Why Choose Aqua Quest?</h2>
+          <h2 className="text-4xl font-extrabold text-center"> Why Choose Aqua Quest?</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8 max-w-5xl">
-            {["💰 Save Water, Save Money", "🎮 Interactive & Engaging", "🌱 Eco-Friendly Impact"].map((title, index) => (
+            {[" Save Water, Save Money", " Interactive & Engaging", " Eco-Friendly Impact"].map((title, index) => (
               <div key={index} className="bg-white text-blue-900 p-6 rounded-lg shadow-md text-center hover:scale-105 transition">
                 <h3 className="text-xl font-bold">{title}</h3>
                 <p className="mt-2">{index === 0 ? "Reduce unnecessary water expenses with AI predictions." : index === 1 ? "Learn water conservation through fun, interactive gameplay." : "Every action in the game contributes to real-world awareness."}</p>

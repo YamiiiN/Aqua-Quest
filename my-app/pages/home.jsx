@@ -113,14 +113,14 @@ export default function Home() {
       {/* 🎮 Water Pollution Fighting Game Section */}
       <div className="w-full bg-gradient-to-br from-blue-900 via-blue-700 to-blue-500 py-16 px-6 flex flex-col items-center">
         <h2 className="text-4xl md:text-5xl font-extrabold text-white text-center mb-6 drop-shadow-lg">
-          Join the Battle Against Water Pollution! 🌊💪
+          Join the Battle Against Water Pollution! 
         </h2>
 
         <p className="text-white text-lg text-center max-w-3xl mt-6">
           Aqua Quest isn’t just about water bill predictions—it’s also an
           exciting **adventure game**! Join forces to **defeat pollution
-          monsters** 🦠, **restore clean water sources**, and **become an
-          eco-warrior**! 🌱
+          monsters** , **restore clean water sources**, and **become an
+          eco-warrior**! 
         </p>
 
         {/* Features Section */}
