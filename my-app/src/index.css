@@ -1,5 +1,5 @@
-@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700;900&display=swap');
+@import "tailwindcss";
 
 @keyframes floating {
   0% { transform: translateY(0); }

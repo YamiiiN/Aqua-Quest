@@ -5,13 +5,35 @@ export default function AdminLogin() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleLogin = (e) => {
+  const handleAdminLogin = async (e) => {
     e.preventDefault();
-    if (email === "admin@aquaquest.com" && password === "admin123") {
+    setError(""); // Clear previous errors
+
+    try {
+      const response = await fetch(
+        "https://aqua-quest-backend-deployment.onrender.com/api/admin/admin-login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed.");
+      }
+
+      // ✅ Save token to localStorage
+      localStorage.setItem("adminToken", data.token);
+
+      // ✅ Redirect to admin dashboard
       navigate("/admin-dashboard");
-    } else {
-      alert("Invalid credentials. Try again!");
+    } catch (err) {
+      setError(err.message);
     }
   };
 
@@ -21,18 +43,17 @@ export default function AdminLogin() {
       style={{ backgroundImage: "url('/images/loginbg.jpg')" }}
     >
       <div className="bg-white/30 backdrop-blur-md p-10 rounded-lg shadow-xl w-[400px] text-center">
-        <h2 className="text-3xl font-extrabold text-blue-900">Admin Login</h2>
-        <p className="text-black text-sm mt-2">
-          Sign in to manage Aqua Quest
-        </p>
+        <h2 className="text-3xl font-extrabold text-maroon-900">Admin Login</h2>
+        <p className="text-black text-sm mt-2">Sign in to manage Aqua Quest</p>
 
-        <form onSubmit={handleLogin} className="mt-6">
-          {/* Email Input */}
+        {error && <p className="text-red-600 text-sm mt-2">{error}</p>}
+
+        <form onSubmit={handleAdminLogin} className="mt-6">
           <div className="mb-4 text-left">
             <label className="block text-black font-semibold">Email</label>
             <input
               type="email"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none bg-white/70 text-gray-800"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maroon-600 focus:outline-none bg-white/70 text-gray-800"
               placeholder="admin@aquaquest.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -40,12 +61,11 @@ export default function AdminLogin() {
             />
           </div>
 
-          {/* Password Input */}
           <div className="mb-4 text-left">
             <label className="block text-black font-semibold">Password</label>
             <input
               type="password"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none bg-white/70 text-gray-800"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maroon-600 focus:outline-none bg-white/70 text-gray-800"
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -53,18 +73,17 @@ export default function AdminLogin() {
             />
           </div>
 
-          {/* Login Button */}
           <button
             type="submit"
-            className="w-full bg-blue-700 hover:bg-blue-900 text-black font-bold py-3 rounded-lg transition-all"
+            className="w-full  bg-blue-700 hover:bg-blue-900  text-white font-bold py-3 rounded-lg transition-all"
           >
             Sign In
           </button>
         </form>
 
-        {/* Forgot Password */}
         <p className="mt-4 text-sm text-black">
-          Forgot password? <span className="text-blue-300 cursor-pointer">Reset here</span>
+          Forgot password?{" "}
+          <span className="text-maroon-300 cursor-pointer">Reset here</span>
         </p>
       </div>
     </div>
