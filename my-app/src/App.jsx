@@ -21,10 +21,30 @@ function App() {
         <Route path="/login-as-admin" element={<AdminLogin />} />
 
         {/* Protected Admin Routes */}
-        <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
-<Route path="/user-management" element={<ProtectedRoute><UserManagement /></ProtectedRoute>} />
-<Route path="/game-analytics" element={<ProtectedRoute><GameAnalytics /></ProtectedRoute>} />
-
+        <Route
+          path="/admin-dashboard"
+          element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/user-management"
+          element={
+            <ProtectedRoute>
+              <UserManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/game-analytics"
+          element={
+            <ProtectedRoute>
+              <GameAnalytics />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </Router>
   );

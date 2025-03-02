@@ -18,7 +18,7 @@ export default function ProtectedRoute({ children }) {
 
       try {
         const response = await fetch(
-          "http://localhost:5000/api/admin/check-auth",
+          "https://aqua-quest-backend-deployment.onrender.com/api/admin/check-auth",
           {
             method: "GET",
             headers: {
