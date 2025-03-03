@@ -32,20 +32,41 @@ export default function AdminDashboard() {
       try {
         const [usersRes, billsRes, billDataRes, categoriesRes, consumptionRes] =
           await Promise.all([
-            fetch("https://aqua-quest-backend-deployment.onrender.com/api/admin/total-users"),
-            fetch("https://aqua-quest-backend-deployment.onrender.com/api/admin/total-waterbills"),
-            fetch("https://aqua-quest-backend-deployment.onrender.com/api/admin/total-waterbills-monthly"),
-            fetch("https://aqua-quest-backend-deployment.onrender.com/api/admin/water-bill-categories"),
-            fetch("https://aqua-quest-backend-deployment.onrender.com/api/admin/water-consumption-trend"),
+            fetch(
+              "https://aqua-quest-backend-deployment.onrender.com/api/admin/total-users"
+            ),
+            fetch(
+              "https://aqua-quest-backend-deployment.onrender.com/api/admin/total-waterbills"
+            ),
+            fetch("http://localhost:5000/api/admin/total-waterbills-monthly"),
+            fetch(
+              "https://aqua-quest-backend-deployment.onrender.com/api/admin/water-bill-categories"
+            ),
+            fetch("http://localhost:5000/api/admin/water-consumption-trend"),
           ]);
+
+        if (!billDataRes.ok) throw new Error(`HTTP ${billDataRes.status}`);
+        if (!consumptionRes.ok)
+          throw new Error(`HTTP ${consumptionRes.status}`);
+
+        const waterBillDataJson = await billDataRes.json();
+        const waterConsumptionDataJson = await consumptionRes.json();
+
+        // Ensure waterBillData is an array before setting state
+        setWaterBillData(
+          Array.isArray(waterBillDataJson) ? waterBillDataJson : []
+        );
+        setWaterConsumptionData(
+          Array.isArray(waterConsumptionDataJson)
+            ? waterConsumptionDataJson
+            : []
+        );
 
         setTotalUsers((await usersRes.json()).totalUsers);
         setTotalWaterBills((await billsRes.json()).totalWaterBills);
-        setWaterBillData(await billDataRes.json());
         setBillCategories(await categoriesRes.json());
-        setWaterConsumptionData(await consumptionRes.json());
       } catch (error) {
-        console.error("Error fetching dashboard data:", error);
+        console.error("❌ Error fetching dashboard data:", error);
       }
     };
 
@@ -93,15 +114,20 @@ export default function AdminDashboard() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
         <ChartCard title="Total Water Bill Uploads">
-          <BarChart data={waterBillData} barSize={40}>
+          <BarChart
+            data={Array.isArray(waterBillData) ? waterBillData : []}
+            barSize={40}
+          >
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.3)" />
             <XAxis dataKey="label" tick={{ fill: "black" }} />
             <YAxis tick={{ fill: "black" }} />
             <Tooltip />
             <Bar dataKey="amount" radius={[8, 8, 0, 0]}>
-              {waterBillData.map((entry, index) => (
-                <Cell key={index} fill={COLORS[index % COLORS.length]} />
-              ))}
+              {Array.isArray(waterBillData)
+                ? waterBillData.map((entry, index) => (
+                    <Cell key={index} fill={COLORS[index % COLORS.length]} />
+                  ))
+                : null}
             </Bar>
           </BarChart>
         </ChartCard>
@@ -128,12 +154,32 @@ export default function AdminDashboard() {
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.3)" />
             <XAxis dataKey="month" tick={{ fill: "black" }} />
             <YAxis tick={{ fill: "black" }} />
-            <Tooltip />
+            <Tooltip
+              formatter={(value, name) => {
+                if (name === "averageConsumption") {
+                  return [
+                    `${value.toFixed(2)} cubic meters`,
+                    "Avg Consumption",
+                  ];
+                } else if (name === "totalBills") {
+                  return [`${value} bills`, "Total Bills"];
+                }
+                return value;
+              }}
+            />
             <Area
               type="monotone"
-              dataKey="amount"
+              dataKey="averageConsumption"
               stroke="#1F2937"
               fill="#818CF8"
+              name="Avg Consumption"
+            />
+            <Area
+              type="monotone"
+              dataKey="totalBills"
+              stroke="#FF8042"
+              fill="#FFBB28"
+              name="Total Bills"
             />
           </AreaChart>
         </ChartCard>

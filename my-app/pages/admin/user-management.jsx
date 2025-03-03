@@ -4,6 +4,8 @@ import AdminLayout from "/pages/admin/layout";
 export default function UserManagement() {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 10; // Show 10 users per page
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -19,9 +21,15 @@ export default function UserManagement() {
     fetchUsers();
   }, []);
 
+  // Filter users based on search input
   const filteredUsers = users.filter(user =>
     `${user.first_name} ${user.last_name}`.toLowerCase().includes(search.toLowerCase())
   );
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
+  const startIndex = (currentPage - 1) * usersPerPage;
+  const displayedUsers = filteredUsers.slice(startIndex, startIndex + usersPerPage);
 
   return (
     <AdminLayout>
@@ -37,7 +45,10 @@ export default function UserManagement() {
             placeholder="Search users..."
             className="w-full max-w-md px-4 py-3 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-600"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setCurrentPage(1); // Reset to page 1 when searching
+            }}
           />
         </div>
 
@@ -53,8 +64,8 @@ export default function UserManagement() {
               </tr>
             </thead>
             <tbody>
-              {filteredUsers.length > 0 ? (
-                filteredUsers.map((user) => (
+              {displayedUsers.length > 0 ? (
+                displayedUsers.map((user) => (
                   <tr
                     key={user._id}
                     className="border-b transition duration-200 hover:bg-blue-100"
@@ -69,16 +80,32 @@ export default function UserManagement() {
                 ))
               ) : (
                 <tr>
-                  <td
-                    colSpan="4"
-                    className="px-6 py-4 text-center text-gray-500"
-                  >
+                  <td colSpan="4" className="px-6 py-4 text-center text-gray-500">
                     No users found.
                   </td>
                 </tr>
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Pagination Controls */}
+        <div className="flex justify-center items-center mt-6 space-x-4">
+          <button
+            onClick={() => setCurrentPage(currentPage - 1)}
+            disabled={currentPage === 1}
+            className={`px-4 py-2 text-white font-semibold rounded-lg ${currentPage === 1 ? "bg-gray-400 cursor-not-allowed" : "bg-blue-700 hover:bg-blue-800"}`}
+          >
+            Previous
+          </button>
+          <span className="text-lg font-semibold">{`Page ${currentPage} of ${totalPages}`}</span>
+          <button
+            onClick={() => setCurrentPage(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className={`px-4 py-2 text-white font-semibold rounded-lg ${currentPage === totalPages ? "bg-gray-400 cursor-not-allowed" : "bg-blue-700 hover:bg-blue-800"}`}
+          >
+            Next
+          </button>
         </div>
       </div>
     </AdminLayout>
