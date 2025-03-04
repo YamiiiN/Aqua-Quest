@@ -55,37 +55,37 @@ export default function UserManagement() {
         {/* User Table */}
         <div className="bg-white shadow-lg rounded-lg overflow-hidden">
           <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="bg-blue-700 text-white text-sm uppercase">
-                <th className="px-6 py-3">Name</th>
-                <th className="px-6 py-3">Email</th>
-                <th className="px-6 py-3">Role</th>
-                <th className="px-6 py-3">Date Created</th>
-              </tr>
-            </thead>
-            <tbody>
-              {displayedUsers.length > 0 ? (
-                displayedUsers.map((user) => (
-                  <tr
-                    key={user._id}
-                    className="border-b transition duration-200 hover:bg-blue-100"
-                  >
-                    <td className="px-6 py-4 font-semibold">{`${user.first_name} ${user.last_name}`}</td>
-                    <td className="px-6 py-4">{user.email}</td>
-                    <td className="px-6 py-4 text-gray-600">{user.role}</td>
-                    <td className="px-6 py-4">
-                      {new Date(user.createdAt).toLocaleDateString()}
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="4" className="px-6 py-4 text-center text-gray-500">
-                    No users found.
-                  </td>
-                </tr>
-              )}
-            </tbody>
+          <thead>
+  <tr className="bg-blue-700 text-white text-sm uppercase">
+    <th className="px-6 py-3">Name</th>
+    <th className="px-6 py-3">Email</th>
+    <th className="px-6 py-3">Role</th>
+    <th className="px-6 py-3">Status</th> {/* New Status Column */}
+    <th className="px-6 py-3">Date Created</th>
+  </tr>
+</thead>
+<tbody>
+  {displayedUsers.length > 0 ? (
+    displayedUsers.map((user) => (
+      <tr key={user._id} className="border-b transition duration-200 hover:bg-blue-100">
+        <td className="px-6 py-4 font-semibold">{`${user.first_name} ${user.last_name}`}</td>
+        <td className="px-6 py-4">{user.email}</td>
+        <td className="px-6 py-4 text-gray-600">{user.role}</td>
+        <td className="px-6 py-4">
+          <span className={`px-2 py-1 rounded-lg text-white font-semibold ${user.status === 'verified' ? 'bg-green-500' : 'bg-red-500'}`}>
+            {user.status === 'verified' ? 'verified' : 'Unverified'}
+          </span>
+        </td>
+        <td className="px-6 py-4">{new Date(user.createdAt).toLocaleDateString()}</td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="5" className="px-6 py-4 text-center text-gray-500">No users found.</td>
+    </tr>
+  )}
+</tbody>
+
           </table>
         </div>
 

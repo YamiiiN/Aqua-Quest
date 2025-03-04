@@ -38,11 +38,11 @@ export default function AdminDashboard() {
             fetch(
               "https://aqua-quest-backend-deployment.onrender.com/api/admin/total-waterbills"
             ),
-            fetch("http://localhost:5000/api/admin/total-waterbills-monthly"),
+            fetch("https://aqua-quest-backend-deployment.onrender.com/api/admin/total-waterbills-monthly"),
             fetch(
               "https://aqua-quest-backend-deployment.onrender.com/api/admin/water-bill-categories"
             ),
-            fetch("http://localhost:5000/api/admin/water-consumption-trend"),
+            fetch("https://aqua-quest-backend-deployment.onrender.com/api/admin/water-consumption-trend"),
           ]);
 
         if (!billDataRes.ok) throw new Error(`HTTP ${billDataRes.status}`);
@@ -113,26 +113,27 @@ export default function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-        <ChartCard title="Total Water Bill Uploads">
-          <BarChart
-            data={Array.isArray(waterBillData) ? waterBillData : []}
-            barSize={40}
-          >
-            <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.3)" />
-            <XAxis dataKey="label" tick={{ fill: "black" }} />
-            <YAxis tick={{ fill: "black" }} />
-            <Tooltip />
-            <Bar dataKey="amount" radius={[8, 8, 0, 0]}>
-              {Array.isArray(waterBillData)
-                ? waterBillData.map((entry, index) => (
-                    <Cell key={index} fill={COLORS[index % COLORS.length]} />
-                  ))
-                : null}
-            </Bar>
-          </BarChart>
-        </ChartCard>
+      <ChartCard 
+  title="Total Water Bill Uploads" 
+  description="This bar chart displays the number of water bills uploaded each month. It helps track user activity and document submission trends."
+>
+  <BarChart data={Array.isArray(waterBillData) ? waterBillData : []} barSize={40}>
+    <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.3)" />
+    <XAxis dataKey="label" tick={{ fill: "black" }} />
+    <YAxis tick={{ fill: "black" }} />
+    <Tooltip />
+    <Bar dataKey="count" radius={[8, 8, 0, 0]}> {/* ✅ Changed "amount" to "count" */}
+      {Array.isArray(waterBillData)
+        ? waterBillData.map((entry, index) => (
+            <Cell key={index} fill={COLORS[index % COLORS.length]} />
+          ))
+        : null}
+    </Bar>
+  </BarChart>
+</ChartCard>
 
-        <ChartCard title="Total Money Saved Over Time">
+
+        <ChartCard title="Total Money Saved Over Time" description="This line chart illustrates the total amount of money saved by users over time. It highlights cost reductions based on efficient water usage.">
           <LineChart data={waterConsumptionData}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.3)" />
             <XAxis dataKey="month" tick={{ fill: "black" }} />
@@ -149,7 +150,7 @@ export default function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-        <ChartCard title="Water Consumption Trend">
+        <ChartCard title="Water Consumption Trend" description="This area chart shows the average water consumption of users over time. It compares total bills uploaded against the average water usage.">
           <AreaChart data={waterConsumptionData}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.3)" />
             <XAxis dataKey="month" tick={{ fill: "black" }} />
@@ -184,7 +185,7 @@ export default function AdminDashboard() {
           </AreaChart>
         </ChartCard>
 
-        <ChartCard title="Water Bill Categories">
+        <ChartCard title="Water Bill Categories" description="This pie chart categorizes water bills based on different bill amounts, ranging from low to high. It helps visualize the distribution of users across various billing levels, showing how many fall into lower or higher bill ranges.">
           <PieChart>
             <Pie
               data={billCategories}
@@ -220,10 +221,11 @@ function StatCard({ title, value, iconBg, icon }) {
   );
 }
 
-function ChartCard({ title, children }) {
+function ChartCard({ title, description, children }) {
   return (
     <div className="bg-gradient-to-br from-white to-gray-100 p-6 rounded-lg shadow-lg text-black">
       <h2 className="text-2xl font-semibold mb-4">{title}</h2>
+      <p className="text-sm text-gray-600 mb-4">{description}</p>
       <ResponsiveContainer width="100%" height={300}>
         {children}
       </ResponsiveContainer>

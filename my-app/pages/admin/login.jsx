@@ -81,10 +81,7 @@ export default function AdminLogin() {
           </button>
         </form>
 
-        <p className="mt-4 text-sm text-black">
-          Forgot password?{" "}
-          <span className="text-maroon-300 cursor-pointer">Reset here</span>
-        </p>
+       
       </div>
     </div>
   );

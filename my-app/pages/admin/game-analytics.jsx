@@ -1,17 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
 import { Trophy } from "lucide-react";
 import AdminLayout from "/pages/admin/layout";
-
-const playerEngagementData = [
-  { date: "Feb 1", players: 120 },
-  { date: "Feb 2", players: 135 },
-  { date: "Feb 3", players: 150 },
-  { date: "Feb 4", players: 180 },
-  { date: "Feb 5", players: 210 },
-  { date: "Feb 6", players: 250 },
-  { date: "Feb 7", players: 300 },
-];
 
 const leaderboardData = [
   { id: 1, name: "John Doe", score: 1500, level: 10, achievements: "🏆🎖️" },
@@ -22,6 +12,20 @@ const leaderboardData = [
 ];
 
 export default function GameAnalytics() {
+  const [playerEngagementData, setPlayerEngagementData] = useState([]);
+
+  useEffect(() => {
+    fetch("https://aqua-quest-backend-deployment.onrender.com/api/admin/player-engagement", {
+      method: "GET",
+      // headers: {
+      //   Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+      // },
+    })
+      .then((response) => response.json())
+      .then((data) => setPlayerEngagementData(data))
+      .catch((error) => console.error("Error fetching player engagement:", error));
+  }, []);
+
   return (
     <AdminLayout>
       <div className="p-6 bg-gray-100 min-h-screen">
