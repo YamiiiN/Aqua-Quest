@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import logo from "/images/AQlogo.jpg"; // Adjust the path based on your project structure
+import logo from "/images/AQLogo.png"; // Adjust the path based on your project structure
 
 export default function Navbar() {
   const location = useLocation();

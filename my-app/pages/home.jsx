@@ -180,13 +180,11 @@ export default function Home() {
           />
           <div className="absolute inset-0 flex flex-col items-center justify-center space-y-4 z-10">
             <img
-              src="/images/AQlogo.jpg"
+              src="/images/AQLogo.png"
               alt="Water Droplet Logo"
-              className="w-40 h-40"
+              className="w-80 h-70"
             />
-            <span className="mb-4 text-black text-6xl font-bold">
-              AQUA QUEST
-            </span>
+
           </div>
         </div>
 

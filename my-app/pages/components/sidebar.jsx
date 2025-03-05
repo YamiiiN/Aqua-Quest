@@ -35,37 +35,43 @@ export default function AdminSidebar() {
 
         {/* Logout Button */}
         <div className="mt-auto">
-          <button onClick={() => setShowModal(true)} className="flex items-center gap-3 p-3 hover:bg-red-600 rounded-md transition-all w-full">
+          <button onClick={() => setShowModal(true)} className="flex items-center gap-3 p-3 hover:bg-blue-600 rounded-md transition-all w-full">
             <LogOut size={24} />
             {!isCollapsed && <span className="text-lg">Logout</span>}
           </button>
         </div>
       </div>
 
-      {/* Modal Without Background Blur */}
+      {/* Modal with Background Overlay */}
       {showModal &&
         ReactDOM.createPortal(
-          <div className="fixed inset-0 flex justify-center items-center z-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg text-center w-96 border border-gray-300">
-              <XCircle size={40} className="text-red-600 mx-auto" />
-              <h2 className="text-xl font-bold text-gray-900 mt-3">Confirm Logout</h2>
-              <p className="text-gray-600 mt-2">Are you sure you want to log out?</p>
-              <div className="mt-6 flex justify-center gap-4">
-                <button
-                  onClick={handleLogout}
-                  className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold"
-                >
-                  Logout
-                </button>
-                <button
-                  onClick={() => setShowModal(false)}
-                  className="bg-gray-300 hover:bg-gray-400 text-gray-900 px-6 py-2 rounded-lg font-semibold"
-                >
-                  Cancel
-                </button>
+          <>
+            {/* Gray Background Overlay */}
+            <div className="fixed inset-0 bg-black/50 z-40"></div>
+
+            {/* Modal Content */}
+            <div className="fixed inset-0 flex justify-center items-center z-50">
+              <div className="bg-white p-6 rounded-lg shadow-lg text-center w-96 border border-gray-300">
+                <XCircle size={40} className="text-red-600 mx-auto" />
+                <h2 className="text-xl font-bold text-gray-900 mt-3">Confirm Logout</h2>
+                <p className="text-gray-600 mt-2">Are you sure you want to log out?</p>
+                <div className="mt-6 flex justify-center gap-4">
+                  <button
+                    onClick={handleLogout}
+                    className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold"
+                  >
+                    Logout
+                  </button>
+                  <button
+                    onClick={() => setShowModal(false)}
+                    className="bg-gray-300 hover:bg-gray-400 text-gray-900 px-6 py-2 rounded-lg font-semibold"
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
             </div>
-          </div>,
+          </>,
           document.body // Keeps modal separate from layout
         )}
     </>

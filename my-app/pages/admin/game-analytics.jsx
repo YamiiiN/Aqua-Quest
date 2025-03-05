@@ -1,43 +1,88 @@
 import React, { useEffect, useState } from "react";
-import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
-import { Trophy } from "lucide-react";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  ResponsiveContainer,
+} from "recharts";
 import AdminLayout from "/pages/admin/layout";
-
-const leaderboardData = [
-  { id: 1, name: "John Doe", score: 1500, level: 10, achievements: "🏆🎖️" },
-  { id: 2, name: "Jane Smith", score: 1450, level: 9, achievements: "🏅🎖️" },
-  { id: 3, name: "Michael Brown", score: 1350, level: 8, achievements: "🎖️" },
-  { id: 4, name: "Emily Johnson", score: 1250, level: 7, achievements: "🏅" },
-  { id: 5, name: "Daniel Wilson", score: 1150, level: 6, achievements: "🏆" },
-];
 
 export default function GameAnalytics() {
   const [playerEngagementData, setPlayerEngagementData] = useState([]);
+  const [leaderboardData, setLeaderboardData] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const playersPerPage = 10;
+  const [sortBy, setSortBy] = useState(null);
+  const [sortOrder, setSortOrder] = useState("asc");
 
   useEffect(() => {
-    fetch("https://aqua-quest-backend-deployment.onrender.com/api/admin/player-engagement", {
-      method: "GET",
-      // headers: {
-      //   Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-      // },
-    })
+    fetch(
+      "https://aqua-quest-backend-deployment.onrender.com/api/admin/player-engagement"
+    )
       .then((response) => response.json())
       .then((data) => setPlayerEngagementData(data))
-      .catch((error) => console.error("Error fetching player engagement:", error));
+      .catch((error) =>
+        console.error("Error fetching player engagement:", error)
+      );
   }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/gamestat/leaderboard")
+      .then((response) => response.json())
+      .then((data) => setLeaderboardData(data))
+      .catch((error) =>
+        console.error("Error fetching leaderboard data:", error)
+      );
+  }, []);
+
+  const handleSort = (key) => {
+    const newSortOrder = sortBy === key && sortOrder === "asc" ? "desc" : "asc";
+    setSortBy(key);
+    setSortOrder(newSortOrder);
+
+    setLeaderboardData((prevData) => {
+      return [...prevData].sort((a, b) => {
+        const getValue = (obj, path) =>
+          path.split(".").reduce((o, p) => o?.[p], obj);
+        const valA = getValue(a, key) ?? 0;
+        const valB = getValue(b, key) ?? 0;
+
+        if (valA < valB) return newSortOrder === "asc" ? -1 : 1;
+        if (valA > valB) return newSortOrder === "asc" ? 1 : -1;
+        return 0;
+      });
+    });
+
+    setCurrentPage(1);
+  };
+
+  const filteredData = leaderboardData.filter((player) =>
+    player.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const indexOfLastPlayer = currentPage * playersPerPage;
+  const indexOfFirstPlayer = indexOfLastPlayer - playersPerPage;
+  const currentPlayers = filteredData.slice(indexOfFirstPlayer, indexOfLastPlayer);
+  const totalPages = Math.ceil(filteredData.length / playersPerPage);
 
   return (
     <AdminLayout>
-      <div className="p-6 bg-gray-100 min-h-screen">
-        {/* Page Header */}
-        <div className="bg-gradient-to-r from-blue-700 to-indigo-900 text-white p-8 rounded-lg shadow-lg mb-8 text-center animate-fade-in">
-          <h1 className="text-5xl font-extrabold tracking-wide"> Game Analytics</h1>
-          <p className="mt-2 text-lg opacity-80">Track player activity and leaderboard rankings.</p>
-        </div>
+      <div className="bg-gradient-to-r from-blue-700 to-indigo-900 text-white p-8 rounded-lg shadow-lg mb-4 text-center">
+        <h1 className="text-5xl font-extrabold tracking-wide">Game Analytics</h1>
+        <p className="mt-2 text-lg opacity-80">
+          Track player activity and leaderboard rankings.
+        </p>
+      </div>
 
-        {/* Player Engagement Graph */}
-        <div className="bg-white p-6 rounded-lg shadow-lg mb-8 transition duration-300 hover:shadow-xl">
-          <h2 className="text-3xl font-bold mb-4 text-blue-900"> Player Engagement Over Time</h2>
+      <div className="p-6 min-h-screen">
+        <div className="bg-white p-6 rounded-lg shadow-lg mb-8">
+          <h2 className="text-3xl font-bold mb-4 text-blue-900">
+            Player Engagement Over Time
+          </h2>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={playerEngagementData}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -49,39 +94,99 @@ export default function GameAnalytics() {
           </ResponsiveContainer>
         </div>
 
-        {/* Leaderboard */}
-        <div className="bg-white p-6 rounded-lg shadow-lg transition duration-300 hover:shadow-xl">
-          <h2 className="text-3xl font-bold mb-4 text-yellow-600"> Leaderboard</h2>
-          <table className="w-full border-collapse">
+        <div className="bg-white p-4 rounded-lg shadow-lg text-center mt-4 mb-4">
+          <h2 className="text-4xl font-bold text-blue-900">Leaderboard Table</h2>
+        </div>
+
+        <div className="flex justify-start mb-6">
+          <input
+            type="text"
+            placeholder="Search Player..."
+            className="w-full max-w-md px-4 py-3 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+
+        <div className="bg-white p-6 shadow-lg rounded-lg overflow-hidden">
+          <table className="w-full text-left border-collapse table-fixed rounded-lg overflow-hidden">
             <thead>
-              <tr className="bg-gray-800 text-white text-sm uppercase">
-                <th className="px-6 py-3">Rank</th>
-                <th className="px-6 py-3">Player</th>
-                <th className="px-6 py-3">Score</th>
-                <th className="px-6 py-3">Level</th>
-                <th className="px-6 py-3">Achievements</th>
+              <tr className="bg-blue-700 text-white text-sm uppercase rounded-t-lg">
+                <th className="px-6 py-3 w-1/12">Rank</th>
+                <th className="px-6 py-3 w-2/12">Player</th>
+                <th className="px-6 py-3 w-1/6 cursor-pointer" onClick={() => handleSort("woins")}>
+                  Woins {sortBy === "woins" ? (sortOrder === "asc" ? "↑" : "↓") : ""}
+                </th>
+                <th className="px-6 py-3 w-1/6 cursor-pointer" onClick={() => handleSort("kills.KanalGoblin")}>
+                  Kanal Goblin Kills {sortBy === "kills.KanalGoblin" ? (sortOrder === "asc" ? "↑" : "↓") : ""}
+                </th>
+                <th className="px-6 py-3 w-1/6 cursor-pointer" onClick={() => handleSort("kills.ElNiño")}>
+                  El Niño Kills {sortBy === "kills.ElNiño" ? (sortOrder === "asc" ? "↑" : "↓") : ""}
+                </th>
+                <th className="px-6 py-3 w-1/6 cursor-pointer" onClick={() => handleSort("overallKills")}>
+                  Overall Kills {sortBy === "overallKills" ? (sortOrder === "asc" ? "↑" : "↓") : ""}
+                </th>
+                <th
+                  className="px-6 py-3 w-1/6 cursor-pointer last:rounded-tr-lg"
+                  onClick={() => handleSort("powerLevel")}
+                >
+                  Power Level{" "}
+                  {sortBy === "powerLevel"
+                    ? sortOrder === "asc"
+                      ? "↑"
+                      : "↓"
+                    : ""}
+                </th>
               </tr>
             </thead>
+
             <tbody>
-              {leaderboardData.map((player, index) => (
-                <tr
-                  key={player.id}
-                  className={`border-b text-center ${
-                    index === 0 ? "bg-yellow-100 font-bold" : "hover:bg-gray-100"
-                  } transition duration-200`}
-                >
-                  <td className="px-6 py-4 text-lg">{index + 1}</td>
-                  <td className="px-6 py-4 flex items-center gap-2 justify-center">
-                    <Trophy size={18} className={index === 0 ? "text-yellow-500" : "text-gray-500"} />
-                    {player.name}
-                  </td>
-                  <td className="px-6 py-4">{player.score}</td>
-                  <td className="px-6 py-4">{player.level}</td>
-                  <td className="px-6 py-4 text-lg">{player.achievements}</td>
-                </tr>
-              ))}
+              {currentPlayers.map((player, index) => {
+                const rank =
+                  sortOrder === "desc"
+                    ? indexOfFirstPlayer + index + 1
+                    : filteredData.length - (indexOfFirstPlayer + index);
+
+                return (
+                  <tr key={player.id} className="border-b text-center hover:bg-blue-100 transition duration-200">
+                    <td className="px-6 py-4 text-lg">{rank}</td>
+                    <td className="px-6 py-4 flex items-center gap-2 justify-center font-semibold truncate">
+                      {player.name}
+                    </td>
+                    <td className="px-6 py-4">{player.woins}</td>
+                    <td className="px-6 py-4">{player.kills.KanalGoblin}</td>
+                    <td className="px-6 py-4">{player.kills.ElNiño}</td>
+                    <td className="px-6 py-4">{player.overallKills}</td>
+                    <td className="px-6 py-4">
+                      {player.powerLevel.toFixed(2)}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
+        </div>
+
+        <div className="flex justify-center items-center mt-4 space-x-2">
+          <button
+            onClick={() => setCurrentPage(currentPage - 1)}
+            disabled={currentPage === 1}
+            className={`px-3 py-1 text-sm font-medium rounded-md transition ${
+              currentPage === 1 ? "bg-gray-300 text-gray-600 cursor-not-allowed" : "bg-blue-600 text-white hover:bg-blue-700"
+            }`}
+          >
+            ← Prev
+          </button>
+          <span className="text-sm text-gray-700">{`Page ${currentPage} of ${totalPages}`}</span>
+          <button
+            onClick={() => setCurrentPage(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className={`px-3 py-1 text-sm font-medium rounded-md transition ${
+              currentPage === totalPages ? "bg-gray-300 text-gray-600 cursor-not-allowed" : "bg-blue-600 text-white hover:bg-blue-700"
+            }`}
+          >
+            Next →
+          </button>
         </div>
       </div>
     </AdminLayout>

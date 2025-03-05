@@ -26,6 +26,7 @@ export default function AdminDashboard() {
   const [waterBillData, setWaterBillData] = useState([]);
   const [billCategories, setBillCategories] = useState([]);
   const [waterConsumptionData, setWaterConsumptionData] = useState([]);
+  const BLUE_SHADES = ["#1E3A8A", "#2563EB", "#3B82F6", "#60A5FA", "#93C5FD"];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,11 +39,15 @@ export default function AdminDashboard() {
             fetch(
               "https://aqua-quest-backend-deployment.onrender.com/api/admin/total-waterbills"
             ),
-            fetch("https://aqua-quest-backend-deployment.onrender.com/api/admin/total-waterbills-monthly"),
+            fetch(
+              "https://aqua-quest-backend-deployment.onrender.com/api/admin/total-waterbills-monthly"
+            ),
             fetch(
               "https://aqua-quest-backend-deployment.onrender.com/api/admin/water-bill-categories"
             ),
-            fetch("https://aqua-quest-backend-deployment.onrender.com/api/admin/water-consumption-trend"),
+            fetch(
+              "https://aqua-quest-backend-deployment.onrender.com/api/admin/water-consumption-trend"
+            ),
           ]);
 
         if (!billDataRes.ok) throw new Error(`HTTP ${billDataRes.status}`);
@@ -77,34 +82,40 @@ export default function AdminDashboard() {
     {
       title: "Total Users",
       value: totalUsers ?? "Loading...",
-      iconBg: "from-blue-500 to-blue-700",
+      iconBg: "bg-blue-800", // Medium blue
       icon: <User size={32} />,
     },
     {
       title: "Total Money Saved",
       value: "₱50,000",
-      iconBg: "from-green-500 to-green-700",
+      iconBg: "bg-blue-700", // Dark slate for contrast
       icon: <DollarSign size={32} />,
     },
     {
       title: "Total Bills Uploaded",
       value: totalWaterBills ?? "Loading...",
-      iconBg: "from-yellow-500 to-yellow-700",
+      iconBg: "bg-blue-600", // Lighter blue
       icon: <FileText size={32} />,
     },
     {
       title: "Avg Savings per User",
       value: "₱41.67",
-      iconBg: "from-purple-500 to-purple-700",
+      iconBg: "bg-blue-500", // Dark gray for variety
       icon: <TrendingUp size={32} />,
     },
   ];
 
   return (
     <AdminLayout>
-      <h1 className="text-4xl font-extrabold text-gray-800 mb-6 text-center">
-        Admin Dashboard
-      </h1>
+      <div className="bg-gradient-to-r from-blue-700 to-indigo-900 text-white p-8 rounded-lg shadow-lg mb-8 text-center">
+        <h1 className="text-5xl font-extrabold tracking-wide">
+          Admin Dashboard
+        </h1>
+        <p className="mt-2 text-lg opacity-80">
+          Gain insights into user activity, game performance, and leaderboard
+          rankings.
+        </p>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, index) => (
@@ -113,27 +124,35 @@ export default function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-      <ChartCard 
-  title="Total Water Bill Uploads" 
-  description="This bar chart displays the number of water bills uploaded each month. It helps track user activity and document submission trends."
->
-  <BarChart data={Array.isArray(waterBillData) ? waterBillData : []} barSize={40}>
-    <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.3)" />
-    <XAxis dataKey="label" tick={{ fill: "black" }} />
-    <YAxis tick={{ fill: "black" }} />
-    <Tooltip />
-    <Bar dataKey="count" radius={[8, 8, 0, 0]}> {/* ✅ Changed "amount" to "count" */}
-      {Array.isArray(waterBillData)
-        ? waterBillData.map((entry, index) => (
-            <Cell key={index} fill={COLORS[index % COLORS.length]} />
-          ))
-        : null}
-    </Bar>
-  </BarChart>
-</ChartCard>
+        <ChartCard
+          title="Total Water Bill Uploads"
+          description="This bar chart displays the number of water bills uploaded each month. It helps track user activity and document submission trends."
+        >
+          <BarChart
+            data={Array.isArray(waterBillData) ? waterBillData : []}
+            barSize={40}
+          >
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.3)" />
+            <XAxis dataKey="label" tick={{ fill: "black" }} />
+            <YAxis tick={{ fill: "black" }} />
+            <Tooltip />
+            <Bar dataKey="count" radius={[8, 8, 0, 0]}>
+              {Array.isArray(waterBillData)
+                ? waterBillData.map((entry, index) => (
+                    <Cell
+                      key={index}
+                      fill={BLUE_SHADES[index % BLUE_SHADES.length]}
+                    />
+                  ))
+                : null}
+            </Bar>
+          </BarChart>
+        </ChartCard>
 
-
-        <ChartCard title="Total Money Saved Over Time" description="This line chart illustrates the total amount of money saved by users over time. It highlights cost reductions based on efficient water usage.">
+        <ChartCard
+          title="Total Money Saved Over Time"
+          description="This line chart illustrates the total amount of money saved by users over time. It highlights cost reductions based on efficient water usage."
+        >
           <LineChart data={waterConsumptionData}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.3)" />
             <XAxis dataKey="month" tick={{ fill: "black" }} />
@@ -142,64 +161,98 @@ export default function AdminDashboard() {
             <Line
               type="monotone"
               dataKey="amount"
-              stroke="#1F2937"
+              stroke="#2563EB"
               strokeWidth={3}
             />
           </LineChart>
         </ChartCard>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-        <ChartCard title="Water Consumption Trend" description="This area chart shows the average water consumption of users over time. It compares total bills uploaded against the average water usage.">
-          <AreaChart data={waterConsumptionData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.3)" />
-            <XAxis dataKey="month" tick={{ fill: "black" }} />
-            <YAxis tick={{ fill: "black" }} />
-            <Tooltip
-              formatter={(value, name) => {
-                if (name === "averageConsumption") {
-                  return [
-                    `${value.toFixed(2)} cubic meters`,
-                    "Avg Consumption",
-                  ];
-                } else if (name === "totalBills") {
-                  return [`${value} bills`, "Total Bills"];
-                }
-                return value;
-              }}
-            />
-            <Area
-              type="monotone"
-              dataKey="averageConsumption"
-              stroke="#1F2937"
-              fill="#818CF8"
-              name="Avg Consumption"
-            />
-            <Area
-              type="monotone"
-              dataKey="totalBills"
-              stroke="#FF8042"
-              fill="#FFBB28"
-              name="Total Bills"
-            />
-          </AreaChart>
-        </ChartCard>
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mt-6">
+        {/* Water Consumption Trend - Wider (Spans 2 Columns) */}
+        <div className="md:col-span-3">
+          <ChartCard
+            title="Water Consumption Trend"
+            description="This area chart shows the average water consumption of users over time. It compares total bills uploaded against the average water usage."
+          >
+            <AreaChart data={waterConsumptionData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.3)" />
+              <XAxis dataKey="month" tick={{ fill: "black" }} />
+              <YAxis tick={{ fill: "black" }} />
+              <Tooltip
+                formatter={(value, name) => {
+                  if (name === "averageConsumption")
+                    return [`${value.toFixed(2)} m³`, "Avg Consumption"];
+                  if (name === "totalBills")
+                    return [`${value} bills`, "Total Bills"];
+                  return value;
+                }}
+              />
+              <Area
+                type="monotone"
+                dataKey="averageConsumption"
+                stroke="#60A5FA"
+                fill="url(#avgConsumptionGradient)"
+              />
+              <Area
+                type="monotone"
+                dataKey="totalBills"
+                stroke="#1E3A8A"
+                fill="url(#totalBillsGradient)"
+              />
+              {/* Define gradients */}
+              <defs>
+                <linearGradient
+                  id="avgConsumptionGradient"
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="1"
+                >
+                  <stop offset="5%" stopColor="#93C5FD" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#93C5FD" stopOpacity={0.2} />
+                </linearGradient>
+                <linearGradient
+                  id="totalBillsGradient"
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="1"
+                >
+                  <stop offset="5%" stopColor="#1E3A8A" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#1E3A8A" stopOpacity={0.2} />
+                </linearGradient>
+              </defs>
+            </AreaChart>
+          </ChartCard>
+        </div>
 
-        <ChartCard title="Water Bill Categories" description="This pie chart categorizes water bills based on different bill amounts, ranging from low to high. It helps visualize the distribution of users across various billing levels, showing how many fall into lower or higher bill ranges.">
-          <PieChart>
-            <Pie
-              data={billCategories}
-              dataKey="value"
-              nameKey="name"
-              outerRadius={100}
-            >
-              {billCategories.map((entry, index) => (
-                <Cell key={index} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip />
-          </PieChart>
-        </ChartCard>
+        {/* Water Bill Categories - Shorter (Spans 1 Column) */}
+        <div className="md:col-span-2">
+          <ChartCard
+            title="Water Bill Categories"
+            description="This pie chart categorizes water bills based on different bill amounts, ranging from low to high."
+          >
+            <PieChart width={300} height={300}>
+              {" "}
+              {/* Increased size */}
+              <Pie
+                data={billCategories}
+                dataKey="value"
+                nameKey="name"
+                outerRadius={120} // Increased from 80 to 120
+              >
+                {billCategories.map((entry, index) => (
+                  <Cell
+                    key={index}
+                    fill={BLUE_SHADES[index % BLUE_SHADES.length]}
+                  />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+          </ChartCard>
+        </div>
       </div>
     </AdminLayout>
   );
