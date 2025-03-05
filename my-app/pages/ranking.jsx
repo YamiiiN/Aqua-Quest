@@ -22,7 +22,7 @@ export default function Ranking() {
     setLoading(true);
     setError(null);
 
-    fetch("http://localhost:5000/api/gamestat/leaderboard")
+    fetch("https://aqua-quest-backend-deployment.onrender.com/api/gamestat/leaderboard")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch leaderboard data.");

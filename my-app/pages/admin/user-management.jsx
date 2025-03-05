@@ -14,7 +14,7 @@ export default function UserManagement() {
     const fetchUsers = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/admin/get-all-users"
+          "https://aqua-quest-backend-deployment.onrender.com/api/admin/get-all-users"
         );
         const data = await response.json();
         setUsers(data);

@@ -31,7 +31,7 @@ export default function GameAnalytics() {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/gamestat/leaderboard")
+    fetch("https://aqua-quest-backend-deployment.onrender.com/api/gamestat/leaderboard")
       .then((response) => response.json())
       .then((data) => setLeaderboardData(data))
       .catch((error) =>
