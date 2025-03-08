@@ -11,11 +11,11 @@
   animation: floating 3s ease-in-out infinite;
 }
 body {
-  font-family: 'Raleway', sans-serif;
+  font-family: Arial, sans-serif;
 }
 
 h1, h2, h3, button, a, p, li, label {
-  font-family: 'Raleway', sans-serif;
+  font-family: Arial, sans-serif;
 }
 
 /* :root {

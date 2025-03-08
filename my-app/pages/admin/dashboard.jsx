@@ -43,7 +43,7 @@ export default function AdminDashboard() {
               "https://aqua-quest-backend-deployment.onrender.com/api/admin/total-waterbills-monthly"
             ),
             fetch(
-              "https://aqua-quest-backend-deployment.onrender.com/api/admin/water-bill-categories"
+              "http://localhost:5000/api/admin/water-bill-categories"
             ),
             fetch(
               "https://aqua-quest-backend-deployment.onrender.com/api/admin/water-consumption-trend"
@@ -285,3 +285,4 @@ function ChartCard({ title, description, children }) {
     </div>
   );
 }
+ 

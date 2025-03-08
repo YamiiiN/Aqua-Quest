@@ -78,7 +78,7 @@ export default function Home() {
             {
               img: "tracking.png",
               title: "Real-Time Usage Tracking",
-              text: "Monitor your daily water consumption with live analytics.",
+              text: "Monitor your montly water consumption with live analytics.",
             },
             {
               img: "conservation.png",
@@ -112,7 +112,7 @@ export default function Home() {
       </div>
       {/* 🎮 Water Pollution Fighting Game Section */}
       <div className="w-full bg-gradient-to-br from-blue-900 via-blue-700 to-blue-500 py-16 px-6 flex flex-col items-center">
-        <h2 className="text-4xl md:text-5xl font-extrabold text-white text-center mb-6 drop-shadow-lg">
+        <h2 className="text-3xl md:text-4xl font-extrabold text-white text-center mb-6 drop-shadow-lg">
           Join the Battle Against Water Pollution! 
         </h2>
 

@@ -33,12 +33,18 @@ export default function GameAnalytics() {
   useEffect(() => {
     fetch("https://aqua-quest-backend-deployment.onrender.com/api/gamestat/leaderboard")
       .then((response) => response.json())
-      .then((data) => setLeaderboardData(data))
+      .then((data) => {
+        // Ensure data is sorted by "overallKills" in descending order by default
+        const sortedData = [...data].sort((a, b) => (b.overallKills || 0) - (a.overallKills || 0));
+        setLeaderboardData(sortedData);
+        setSortBy("overallKills"); // Set default sorting column
+        setSortOrder("desc"); // Set default sorting order
+      })
       .catch((error) =>
         console.error("Error fetching leaderboard data:", error)
       );
   }, []);
-
+  
   const handleSort = (key) => {
     const newSortOrder = sortBy === key && sortOrder === "asc" ? "desc" : "asc";
     setSortBy(key);
