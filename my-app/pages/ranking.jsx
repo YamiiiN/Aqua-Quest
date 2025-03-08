@@ -121,7 +121,7 @@ export default function Ranking() {
                   </th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody>\
                 {filteredPlayers.map((player, index) => {
                   const rank = sortOrder === "desc" ? index + 1 : filteredPlayers.length - index;
                   return (

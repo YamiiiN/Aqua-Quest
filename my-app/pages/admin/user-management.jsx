@@ -37,7 +37,7 @@ export default function UserManagement() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/admin/average-consumption"
+          "https://aqua-quest-backend-deployment.onrender.com/api/admin/average-consumption"
         );
         const data = await response.json();
         setScatterData(data.scatterData);
@@ -81,7 +81,7 @@ export default function UserManagement() {
   const handleUpdateStatus = async (userId, newStatus) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/admin/update-status/${userId}`, // Using localhost
+        `https://aqua-quest-backend-deployment.onrender.com/api/admin/update-status/${userId}`, // Using localhost
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -110,7 +110,7 @@ export default function UserManagement() {
   const handleFetchUserWaterBill = async (userId) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/admin/user-water-bills/${userId}`
+        `https://aqua-quest-backend-deployment.onrender.com/api/admin/user-water-bills/${userId}`
       );
       const data = await response.json();
       setBarChartData(data.barChartData);
