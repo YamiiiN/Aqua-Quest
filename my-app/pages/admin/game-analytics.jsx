@@ -1,14 +1,11 @@
+// filepath: c:\Users\Danniel\Documents\GitHub\Aqua-Quest\my-app\pages\admin\game-analytics.jsx
 import React, { useEffect, useState } from "react";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  CartesianGrid,
-  ResponsiveContainer,
-} from "recharts";
 import AdminLayout from "/pages/admin/layout";
+import SearchBar from "../components/GameSearchBar";
+import LeaderboardTable from "../components/LeaderBoardTable";
+import PaginationControls from "../components/GamePaginationControls";
+import PlayerEngagementChart from "../components/PlayerEngagementChart";
+import PlayerKillStatsChart from "../components/PlayerKillStatsChart";
 
 export default function GameAnalytics() {
   const [playerEngagementData, setPlayerEngagementData] = useState([]);
@@ -85,115 +82,25 @@ export default function GameAnalytics() {
       </div>
 
       <div className="p-6 min-h-screen">
-        <div className="bg-white p-6 rounded-lg shadow-lg mb-8">
-          <h2 className="text-3xl font-bold mb-4 text-blue-900">
-            Player Engagement Over Time
-          </h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={playerEngagementData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
-              <YAxis />
-              <Tooltip />
-              <Line type="monotone" dataKey="players" stroke="#4F46E5" strokeWidth={3} dot={{ r: 6 }} />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-
+        <PlayerEngagementChart playerEngagementData={playerEngagementData} />
+        <PlayerKillStatsChart />
         <div className="bg-white p-4 rounded-lg shadow-lg text-center mt-4 mb-4">
           <h2 className="text-4xl font-bold text-blue-900">Leaderboard Table</h2>
         </div>
-
-        <div className="flex justify-start mb-6">
-          <input
-            type="text"
-            placeholder="Search Player..."
-            className="w-full max-w-md px-4 py-3 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-
-        <div className="bg-white p-6 shadow-lg rounded-lg overflow-hidden">
-          <table className="w-full text-left border-collapse table-fixed rounded-lg overflow-hidden">
-            <thead>
-              <tr className="bg-blue-700 text-white text-sm uppercase rounded-t-lg">
-                <th className="px-6 py-3 w-1/12">Rank</th>
-                <th className="px-6 py-3 w-2/12">Player</th>
-                <th className="px-6 py-3 w-1/6 cursor-pointer" onClick={() => handleSort("woins")}>
-                  Woins {sortBy === "woins" ? (sortOrder === "asc" ? "↑" : "↓") : ""}
-                </th>
-                <th className="px-6 py-3 w-1/6 cursor-pointer" onClick={() => handleSort("kills.KanalGoblin")}>
-                  Kanal Goblin Kills {sortBy === "kills.KanalGoblin" ? (sortOrder === "asc" ? "↑" : "↓") : ""}
-                </th>
-                <th className="px-6 py-3 w-1/6 cursor-pointer" onClick={() => handleSort("kills.ElNiño")}>
-                  El Niño Kills {sortBy === "kills.ElNiño" ? (sortOrder === "asc" ? "↑" : "↓") : ""}
-                </th>
-                <th className="px-6 py-3 w-1/6 cursor-pointer" onClick={() => handleSort("overallKills")}>
-                  Overall Kills {sortBy === "overallKills" ? (sortOrder === "asc" ? "↑" : "↓") : ""}
-                </th>
-                <th
-                  className="px-6 py-3 w-1/6 cursor-pointer last:rounded-tr-lg"
-                  onClick={() => handleSort("powerLevel")}
-                >
-                  Power Level{" "}
-                  {sortBy === "powerLevel"
-                    ? sortOrder === "asc"
-                      ? "↑"
-                      : "↓"
-                    : ""}
-                </th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {currentPlayers.map((player, index) => {
-                const rank =
-                  sortOrder === "desc"
-                    ? indexOfFirstPlayer + index + 1
-                    : filteredData.length - (indexOfFirstPlayer + index);
-
-                return (
-                  <tr key={player.id} className="border-b text-center hover:bg-blue-100 transition duration-200">
-                    <td className="px-6 py-4 text-lg">{rank}</td>
-                    <td className="px-6 py-4 flex items-center gap-2 justify-center font-semibold truncate">
-                      {player.name}
-                    </td>
-                    <td className="px-6 py-4">{player.woins}</td>
-                    <td className="px-6 py-4">{player.kills.KanalGoblin}</td>
-                    <td className="px-6 py-4">{player.kills.ElNiño}</td>
-                    <td className="px-6 py-4">{player.overallKills}</td>
-                    <td className="px-6 py-4">
-                      {player.powerLevel.toFixed(2)}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-
-        <div className="flex justify-center items-center mt-4 space-x-2">
-          <button
-            onClick={() => setCurrentPage(currentPage - 1)}
-            disabled={currentPage === 1}
-            className={`px-3 py-1 text-sm font-medium rounded-md transition ${
-              currentPage === 1 ? "bg-gray-300 text-gray-600 cursor-not-allowed" : "bg-blue-600 text-white hover:bg-blue-700"
-            }`}
-          >
-            ← Prev
-          </button>
-          <span className="text-sm text-gray-700">{`Page ${currentPage} of ${totalPages}`}</span>
-          <button
-            onClick={() => setCurrentPage(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className={`px-3 py-1 text-sm font-medium rounded-md transition ${
-              currentPage === totalPages ? "bg-gray-300 text-gray-600 cursor-not-allowed" : "bg-blue-600 text-white hover:bg-blue-700"
-            }`}
-          >
-            Next →
-          </button>
-        </div>
+        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+        <LeaderboardTable
+          currentPlayers={currentPlayers}
+          sortBy={sortBy}
+          sortOrder={sortOrder}
+          handleSort={handleSort}
+          indexOfFirstPlayer={indexOfFirstPlayer}
+          filteredData={filteredData}
+        />
+        <PaginationControls
+          currentPage={currentPage}
+          totalPages={totalPages}
+          setCurrentPage={setCurrentPage}
+        />
       </div>
     </AdminLayout>
   );

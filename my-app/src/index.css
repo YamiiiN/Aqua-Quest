@@ -17,7 +17,20 @@ body {
 h1, h2, h3, button, a, p, li, label {
   font-family: Arial, sans-serif;
 }
+.modal-content {
+  animation: slideUp 0.5s ease-in-out;
+}
 
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

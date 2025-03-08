@@ -13,7 +13,7 @@ export default function AdminLogin() {
 
     try {
       const response = await fetch(
-        "https://aqua-quest-backend-deployment.onrender.com/api/admin/admin-login",
+        "http://localhost:5000/api/admin/admin-login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -27,8 +27,11 @@ export default function AdminLogin() {
         throw new Error(data.message || "Login failed.");
       }
 
-      // ✅ Save token to localStorage
+      // ✅ Save token and user info to localStorage
       localStorage.setItem("adminToken", data.token);
+      localStorage.setItem("adminEmail", data.user.email);
+      localStorage.setItem("adminFirstName", data.user.firstName);
+      localStorage.setItem("adminLastName", data.user.lastName);
 
       // ✅ Redirect to admin dashboard
       navigate("/admin-dashboard");
@@ -75,13 +78,11 @@ export default function AdminLogin() {
 
           <button
             type="submit"
-            className="w-full  bg-blue-700 hover:bg-blue-900  text-white font-bold py-3 rounded-lg transition-all"
+            className="w-full bg-blue-700 hover:bg-blue-900 text-white font-bold py-3 rounded-lg transition-all"
           >
             Sign In
           </button>
         </form>
-
-       
       </div>
     </div>
   );
