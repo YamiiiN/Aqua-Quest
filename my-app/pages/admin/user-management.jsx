@@ -41,7 +41,7 @@ export default function UserManagement() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/admin/average-consumption"
+          "https://aqua-quest-backend-deployment.onrender.com/api/admin/average-consumption"
         );
         const data = await response.json();
         setScatterData(data.scatterData);
@@ -73,7 +73,7 @@ export default function UserManagement() {
     const fetchLastFiveUsers = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/admin/last-five"
+          "https://aqua-quest-backend-deployment.onrender.com/api/admin/last-five"
         );
         const data = await response.json();
         setLastFiveUsers(data.users);
@@ -212,13 +212,20 @@ export default function UserManagement() {
             <h2 className="text-2xl font-bold mb-4">Last 5 Users</h2>
             <ul className="space-y-4">
               {lastFiveUsers.map((user) => (
-                <li key={user._id} className="mb-2 p-2 border-b border-gray-200 flex justify-between">
+                <li
+                  key={user._id}
+                  className="mb-2 p-2 border-b border-gray-200 flex justify-between"
+                >
                   <div>
-                    <p className="font-semibold">{user.first_name} {user.last_name}</p>
+                    <p className="font-semibold">
+                      {user.first_name} {user.last_name}
+                    </p>
                     <p className="text-sm text-gray-600">{user.email}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">{new Date(user.createdAt).toLocaleDateString()}</p>
+                    <p className="text-sm text-gray-600">
+                      {new Date(user.createdAt).toLocaleDateString()}
+                    </p>
                   </div>
                 </li>
               ))}

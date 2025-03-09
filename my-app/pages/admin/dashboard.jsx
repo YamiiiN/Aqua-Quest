@@ -47,8 +47,12 @@ export default function AdminDashboard() {
           fetch(
             "https://aqua-quest-backend-deployment.onrender.com/api/admin/total-waterbills"
           ),
-          fetch("https://aqua-quest-backend-deployment.onrender.com/api/admin/total-saved-cost"),
-          fetch("https://aqua-quest-backend-deployment.onrender.com/api/admin/avg-savings-per-user"),
+          fetch(
+            "https://aqua-quest-backend-deployment.onrender.com/api/admin/total-saved-cost"
+          ),
+          fetch(
+            "https://aqua-quest-backend-deployment.onrender.com/api/admin/avg-savings-per-user"
+          ),
           fetch(
             "https://aqua-quest-backend-deployment.onrender.com/api/admin/total-waterbills-monthly"
           ),
@@ -58,13 +62,20 @@ export default function AdminDashboard() {
           fetch(
             "https://aqua-quest-backend-deployment.onrender.com/api/admin/water-consumption-trend"
           ),
-          fetch("https://aqua-quest-backend-deployment.onrender.com/api/admin/total-money-saved-over-time"),
-          fetch("https://aqua-quest-backend-deployment.onrender.com/api/admin/prediction-accuracy"),
-          fetch("http://localhost:5000/api/admin/inventory-stats"), // Corrected URL for radar chart data
+          fetch(
+            "https://aqua-quest-backend-deployment.onrender.com/api/admin/total-money-saved-over-time"
+          ),
+          fetch(
+            "https://aqua-quest-backend-deployment.onrender.com/api/admin/prediction-accuracy"
+          ),
+          fetch(
+            "https://aqua-quest-backend-deployment.onrender.com/api/admin/inventory-stats"
+          ), // Corrected URL for radar chart data
         ]);
 
         if (!billDataRes.ok) throw new Error(`HTTP ${billDataRes.status}`);
-        if (!consumptionRes.ok) throw new Error(`HTTP ${consumptionRes.status}`);
+        if (!consumptionRes.ok)
+          throw new Error(`HTTP ${consumptionRes.status}`);
 
         const waterBillDataJson = await billDataRes.json();
         const waterConsumptionDataJson = await consumptionRes.json();
@@ -122,13 +133,19 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
         <div>
           <div className="flex justify-between items-center">
-            <a href="/bills" className="text-blue-500">See More...</a>
+            <a href="/bills" className="text-blue-500">
+              See More...
+            </a>
           </div>
-          <WaterConsumptionTrendChart waterConsumptionData={waterConsumptionData} />
+          <WaterConsumptionTrendChart
+            waterConsumptionData={waterConsumptionData}
+          />
         </div>
         <div>
           <div className="flex justify-between items-center">
-            <a href="/inventory" className="text-blue-500">See More...</a>
+            <a href="/inventory" className="text-blue-500">
+              See More...
+            </a>
           </div>
           <RadarChartInventory data={radarChartData} />
         </div>
@@ -137,17 +154,21 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mt-6">
         <div className="md:col-span-2">
           <div className="flex justify-between items-center">
-
-            <a href="/predictions" className="text-blue-500">See More...</a>
+            <a href="/predictions" className="text-blue-500">
+              See More...
+            </a>
           </div>
           <PredictionAccuracyChart data={predictionAccuracy} />
         </div>
         <div className="md:col-span-3">
           <div className="flex justify-between items-center">
-
-            <a href="/saved" className="text-blue-500">See More...</a>
+            <a href="/saved" className="text-blue-500">
+              See More...
+            </a>
           </div>
-          <TotalMoneySavedOverTimeChart totalMoneySavedOverTime={totalMoneySavedOverTime} />
+          <TotalMoneySavedOverTimeChart
+            totalMoneySavedOverTime={totalMoneySavedOverTime}
+          />
         </div>
       </div>
     </AdminLayout>
