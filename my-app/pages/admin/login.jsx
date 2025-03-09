@@ -13,7 +13,7 @@ export default function AdminLogin() {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/admin/admin-login",
+        "https://aqua-quest-backend-deployment.onrender.com/api/admin/admin-login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

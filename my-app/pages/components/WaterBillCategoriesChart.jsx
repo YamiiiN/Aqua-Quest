@@ -4,7 +4,7 @@ import ChartCard from "./ChartCard";
 
 const BLUE_SHADES = ["#1E3A8A", "#2563EB", "#3B82F6", "#60A5FA", "#93C5FD"];
 
-function WaterBillCategoriesChart({ billCategories }) {
+function WaterBillCategoriesChart({ billCategories = [] }) {
   return (
     <ChartCard
       title="Water Bill Categories"

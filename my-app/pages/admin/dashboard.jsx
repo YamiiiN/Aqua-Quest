@@ -46,8 +46,8 @@ export default function AdminDashboard() {
           fetch(
             "https://aqua-quest-backend-deployment.onrender.com/api/admin/total-waterbills"
           ),
-          fetch("http://localhost:5000/api/admin/total-saved-cost"),
-          fetch("http://localhost:5000/api/admin/avg-savings-per-user"),
+          fetch("https://aqua-quest-backend-deployment.onrender.com/api/admin/total-saved-cost"),
+          fetch("https://aqua-quest-backend-deployment.onrender.com/api/admin/avg-savings-per-user"),
           fetch(
             "https://aqua-quest-backend-deployment.onrender.com/api/admin/total-waterbills-monthly"
           ),
@@ -57,8 +57,8 @@ export default function AdminDashboard() {
           fetch(
             "https://aqua-quest-backend-deployment.onrender.com/api/admin/water-consumption-trend"
           ),
-          fetch("http://localhost:5000/api/admin/total-money-saved-over-time"),
-          fetch("http://localhost:5000/api/admin/prediction-accuracy"),
+          fetch("https://aqua-quest-backend-deployment.onrender.com/api/admin/total-money-saved-over-time"),
+          fetch("https://aqua-quest-backend-deployment.onrender.com/api/admin/prediction-accuracy"),
         ]);
 
         if (!billDataRes.ok) throw new Error(`HTTP ${billDataRes.status}`);

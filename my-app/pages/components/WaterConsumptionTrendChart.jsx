@@ -46,7 +46,7 @@ function WaterConsumptionTrendChart({ waterConsumptionData }) {
             id="avgConsumptionGradient"
             x1="0"
             y1="0"
-            x2="0"
+            x2="0"w
             y2="1"
           >
             <stop offset="5%" stopColor="#93C5FD" stopOpacity={0.8} />

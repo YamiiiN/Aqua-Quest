@@ -9,6 +9,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import ChartCard from "./ChartCard";
 
 const COLORS = ["#1E3A8A", "#2563EB", "#3B82F6", "#60A5FA"];
 
@@ -42,23 +43,23 @@ function PlayerKillStatsChart() {
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-lg text-center mt-4 mb-4">
-      <h2 className="text-4xl font-bold text-blue-900">Player Kill Stats</h2>
-      <div className="h-96">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={killStatsData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="playerName" />
-            <YAxis />
-            <Tooltip content={<CustomTooltip />} />
-            <Legend />
-            <Bar dataKey="kanalGoblinKills" stackId="a" fill={COLORS[0]} />
-            <Bar dataKey="elNinoKills" stackId="a" fill={COLORS[1]} />
-            <Bar dataKey="pinsalangKinamadaKills" stackId="a" fill={COLORS[2]} />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-    </div>
+    <ChartCard
+      title="Player Kill Stats"
+      description="This bar chart shows the number of kills by players for different categories."
+    >
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={killStatsData}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="playerName" />
+          <YAxis />
+          <Tooltip content={<CustomTooltip />} />
+          <Legend />
+          <Bar dataKey="kanalGoblinKills" stackId="a" fill={COLORS[0]} />
+          <Bar dataKey="elNinoKills" stackId="a" fill={COLORS[1]} />
+          <Bar dataKey="pinsalangKinamadaKills" stackId="a" fill={COLORS[2]} />
+        </BarChart>
+      </ResponsiveContainer>
+    </ChartCard>
   );
 }
 

@@ -7,6 +7,9 @@ import AdminLogin from "../pages/admin/login";
 import AdminDashboard from "../pages/admin/dashboard";
 import UserManagement from "../pages/admin/user-management";
 import GameAnalytics from "../pages/admin/game-analytics";
+import Statistics from "../pages/admin/game-analytics/statistics";
+import Bills from "../pages/admin/water-usage-analytics/bills";
+import Inventory from "../pages/admin/game-analytics/inventory";
 import ProtectedRoute from "./middleware/ProtectedRoute";
 import "./index.css";
 
@@ -38,10 +41,26 @@ function App() {
           }
         />
         <Route
-          path="/game-analytics"
+          path="/Statistics"
           element={
             <ProtectedRoute>
-              <GameAnalytics />
+              <Statistics />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/Inventory"
+          element={
+            <ProtectedRoute>
+              <Inventory />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/Bills"
+          element={
+            <ProtectedRoute>
+              <Bills />
             </ProtectedRoute>
           }
         />

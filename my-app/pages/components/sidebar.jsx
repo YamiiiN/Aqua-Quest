@@ -8,6 +8,13 @@ import {
   XCircle,
   User,
   Mail,
+  ChevronDown,
+  Gamepad,
+  Wallet,
+  Activity,
+  LineChart,
+  Receipt,
+  PiggyBank
 } from "lucide-react";
 import ReactDOM from "react-dom";
 
@@ -16,10 +23,40 @@ export default function AdminSidebar() {
   const [showModal, setShowModal] = useState(false);
   const [adminName, setAdminName] = useState("");
   const [adminEmail, setAdminEmail] = useState("");
+  const [expandedMenu, setExpandedMenu] = useState(null);
   const navigate = useNavigate();
 
+  const menuItems = [
+    {
+      label: "Dashboard",
+      icon: <LayoutDashboard size={24} />,
+      to: "/admin-dashboard"
+    },
+    {
+      label: "User Management",
+      icon: <Users size={24} />,
+      to: "/user-management"
+    },
+    {
+      label: "Game Analytics",
+      icon: <Gamepad size={24} />,
+      subItems: [
+        { label: "Player Inventory", to: "/inventory", icon: <Wallet size={20} /> },
+        { label: "Player Statistics", to: "/statistics", icon: <Activity size={20} /> }
+      ]
+    },
+    {
+      label: "Water Usage Analytics",
+      icon: <BarChart size={24} />,
+      subItems: [
+        { label: "Predictions", to: "/water-analytics/predictions", icon: <LineChart size={20} /> },
+        { label: "Water Bill", to: "/bills", icon: <Receipt size={20} /> },
+        { label: "Saved", to: "/water-analytics/saved", icon: <PiggyBank size={20} /> }
+      ]
+    }
+  ];
+
   useEffect(() => {
-    // Fetch admin name and email from local storage
     const firstName = localStorage.getItem("adminFirstName") || "Admin";
     const lastName = localStorage.getItem("adminLastName") || "";
     const email = localStorage.getItem("adminEmail") || "";
@@ -28,11 +65,68 @@ export default function AdminSidebar() {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("adminToken"); // Remove token
+    localStorage.removeItem("adminToken");
     localStorage.removeItem("adminEmail");
     localStorage.removeItem("adminFirstName");
     localStorage.removeItem("adminLastName");
-    navigate("/login-as-admin"); // Redirect to login page
+    navigate("/login-as-admin");
+  };
+
+  const toggleMenu = (label) => {
+    setExpandedMenu(expandedMenu === label ? null : label);
+  };
+
+  const NavItem = ({ item }) => {
+    const hasSubItems = item.subItems && item.subItems.length > 0;
+    const isExpanded = expandedMenu === item.label;
+
+    if (!hasSubItems) {
+      return (
+        <Link
+          to={item.to}
+          className="flex items-center gap-3 p-3 hover:bg-blue-900 rounded-md transition-all"
+        >
+          {item.icon}
+          {!isCollapsed && <span className="text-lg">{item.label}</span>}
+        </Link>
+      );
+    }
+
+    return (
+      <div className="w-full">
+        <button
+          onClick={() => toggleMenu(item.label)}
+          className="flex items-center justify-between w-full p-3 hover:bg-blue-900 rounded-md transition-all text-white"
+        >
+          <div className="flex items-center gap-3">
+            {item.icon}
+            {!isCollapsed && <span className="text-lg">{item.label}</span>}
+          </div>
+          {!isCollapsed && (
+            <ChevronDown
+              size={20}
+              className={`transform transition-transform ${
+                isExpanded ? "rotate-180" : ""
+              }`}
+            />
+          )}
+        </button>
+        {isExpanded && !isCollapsed && (
+          <div className="ml-8 mt-1 space-y-1">
+            {item.subItems.map((subItem) => (
+              <Link
+                key={subItem.to}
+                to={subItem.to}
+                className="flex items-center gap-2 p-2 text-sm hover:bg-blue-900 rounded-md transition-all text-gray-300 hover:text-white"
+              >
+                {subItem.icon}
+                <span>{subItem.label}</span>
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -42,7 +136,6 @@ export default function AdminSidebar() {
           isCollapsed ? "w-20" : "w-64"
         } transition-all duration-300 flex flex-col p-4`}
       >
-        {/* Toggle Button */}
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
           className="mb-6 self-end text-white"
@@ -50,7 +143,6 @@ export default function AdminSidebar() {
           {isCollapsed ? "▶" : "◀"}
         </button>
 
-        {/* Logo */}
         <div className="mb-6 text-center">
           <h1
             className={`text-xl font-bold transition-all ${
@@ -61,7 +153,6 @@ export default function AdminSidebar() {
           </h1>
         </div>
 
-        {/* Admin Info */}
         <div className="mb-6 text-center">
           <div className="flex items-center gap-3 p-3">
             <User size={24} />
@@ -73,29 +164,12 @@ export default function AdminSidebar() {
           </div>
         </div>
 
-        {/* Navigation Links */}
-        <nav className="flex flex-col gap-4">
-          <NavItem
-            to="/admin-dashboard"
-            icon={<LayoutDashboard size={24} />}
-            label="Dashboard"
-            isCollapsed={isCollapsed}
-          />
-          <NavItem
-            to="/user-management"
-            icon={<Users size={24} />}
-            label="User Management"
-            isCollapsed={isCollapsed}
-          />
-          <NavItem
-            to="/game-analytics"
-            icon={<BarChart size={24} />}
-            label="Game & Engagement"
-            isCollapsed={isCollapsed}
-          />
+        <nav className="flex flex-col gap-2">
+          {menuItems.map((item) => (
+            <NavItem key={item.label} item={item} />
+          ))}
         </nav>
 
-        {/* Logout Button */}
         <div className="mt-auto">
           <button
             onClick={() => setShowModal(true)}
@@ -107,15 +181,11 @@ export default function AdminSidebar() {
         </div>
       </div>
 
-      {/* Modal with Background Overlay */}
       {showModal &&
         ReactDOM.createPortal(
-          <div className="fixed inset-0 flex justify-center items-center z-50 transition-opacity duration-300 ease-in-out">
-            {/* Gray Background Overlay */}
-            <div className="fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 ease-in-out"></div>
-
-            {/* Modal Content */}
-            <div className="modal-content bg-white p-6 rounded-lg shadow-lg text-center w-96 border border-gray-300 z-50 transform transition-transform duration-300 ease-in-out">
+          <div className="fixed inset-0 flex justify-center items-center z-50">
+            <div className="fixed inset-0 bg-black/50 z-40"></div>
+            <div className="modal-content bg-white p-6 rounded-lg shadow-lg text-center w-96 border border-gray-300 z-50">
               <XCircle size={40} className="text-red-600 mx-auto" />
               <h2 className="text-xl font-bold text-gray-900 mt-3">
                 Confirm Logout
@@ -139,21 +209,8 @@ export default function AdminSidebar() {
               </div>
             </div>
           </div>,
-          document.body // Keeps modal separate from layout
+          document.body
         )}
     </>
-  );
-}
-
-/** Individual Nav Item Component */
-function NavItem({ to, icon, label, isCollapsed }) {
-  return (
-    <Link
-      to={to}
-      className="flex items-center gap-3 p-3 hover:bg-blue-900 rounded-md transition-all"
-    >
-      {icon}
-      {!isCollapsed && <span className="text-lg">{label}</span>}
-    </Link>
   );
 }
