@@ -47,7 +47,7 @@ export default function Home() {
 
           {/* Right Side: 3D Model */}
           <div className="w-full lg:w-1/2 flex justify-center items-center mt-10 lg:mt-0">
-            <div className="w-full h-full max-w-[700px] max-h-[700px] sm:max-w-[800px] sm:max-h-[800px] lg:max-w-[900px] lg:max-h-[900px]">
+            <div className="w-[700px] h-[700px] sm:w-[800px] sm:h-800px] lg:w-[900px] lg:h-[900px]">
               <iframe
                 src="https://my.spline.design/hand19copy-4e6083997cd6cca33be95744523a2734/"
                 width="100%"
