@@ -182,7 +182,7 @@ export default function Home() {
             <img
               src="/images/AQLogo.png"
               alt="Water Droplet Logo"
-              className="w-60 h-60"
+              className="w-40 h-40 sm:w-48 sm:h-48 md:w-60 md:h-60"
             />
           </div>
         </div>
