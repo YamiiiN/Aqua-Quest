@@ -75,11 +75,14 @@ export default function GameAnalytics() {
     <AdminLayout>
       <div className="p-6 min-h-screen">
         <h1 className="text-3xl font-bold mb-6">Player Statistics</h1>
-        <div className="mb-6">
-          <PlayerEngagementChart playerEngagementData={playerEngagementData} />
-        </div>
-        <div className="mb-6">
-          <PlayerKillStatsChart />
+        <hr className="my-6 border-t-2 border-gray-300" />
+        <div className="flex flex-wrap mb-6">
+          <div className="w-full lg:w-1/2 p-4">
+            <PlayerEngagementChart playerEngagementData={playerEngagementData} />
+          </div>
+          <div className="w-full lg:w-1/2 p-4">
+            <PlayerKillStatsChart />
+          </div>
         </div>
         <div className="bg-white p-4 rounded-lg shadow-lg text-center mt-4 mb-4">
           <h2 className="text-4xl font-bold text-blue-900">Leaderboard Table</h2>

@@ -5,8 +5,8 @@ import ChartCard from './ChartCard';
 function PlayerEngagementChart({ playerEngagementData }) {
   return (
     <ChartCard
-      title="Player Engagement Over Time"
-      description="This line chart shows the engagement of players over time."
+      title="User Engagement Over Time"
+      description="This line chart shows the engagement of users over time."
     >
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={playerEngagementData}>

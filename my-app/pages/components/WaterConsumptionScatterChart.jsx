@@ -1,5 +1,6 @@
 import React from 'react';
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import ChartCard from './ChartCard'; // Import the ChartCard component
 
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
@@ -16,35 +17,31 @@ const CustomTooltip = ({ active, payload }) => {
 
 function WaterConsumptionScatterChart({ scatterData }) {
   return (
-    <div className="bg-white p-6 shadow-lg rounded-lg mt-8">
-      <h2 className="text-2xl font-bold mb-4 text-gray-800">
-        Average Water Consumption per User
-      </h2>
-      <div className="h-96">
-        <ResponsiveContainer width="100%" height="100%">
-          <ScatterChart margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis
-              type="number"
-              dataKey="id"
-              name="User ID"
-              domain={["auto", "auto"]}
-            />
-            <YAxis
-              type="number"
-              dataKey="avgConsumption"
-              name="Avg Consumption (L)"
-              unit="L"
-            />
-            <Tooltip
-              content={<CustomTooltip />}
-              cursor={{ strokeDasharray: "3 3" }}
-            />
-            <Scatter name="Users" data={scatterData} fill="#2563EB" />
-          </ScatterChart>
-        </ResponsiveContainer>
-      </div>
-    </div>
+    <ChartCard 
+      title="Average Water Consumption per User" 
+      description="This chart shows the average water consumption per user. Each point represents a user, with the x-axis representing the user ID and the y-axis representing the average water consumption in liters."
+    >
+      <ScatterChart margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis
+          type="number"
+          dataKey="id"
+          name="User ID"
+          domain={["auto", "auto"]}
+        />
+        <YAxis
+          type="number"
+          dataKey="avgConsumption"
+          name="Avg Consumption (L)"
+          unit="L"
+        />
+        <Tooltip
+          content={<CustomTooltip />}
+          cursor={{ strokeDasharray: "3 3" }}
+        />
+        <Scatter name="Users" data={scatterData} fill="#2563EB" />
+      </ScatterChart>
+    </ChartCard>
   );
 }
 

@@ -49,9 +49,9 @@ export default function AdminSidebar() {
       label: "Water Usage Analytics",
       icon: <BarChart size={24} />,
       subItems: [
-        { label: "Predictions", to: "/water-analytics/predictions", icon: <LineChart size={20} /> },
+        { label: "Predictions", to: "/predictions", icon: <LineChart size={20} /> },
         { label: "Water Bill", to: "/bills", icon: <Receipt size={20} /> },
-        { label: "Saved", to: "/water-analytics/saved", icon: <PiggyBank size={20} /> }
+        { label: "Saved", to: "/saved", icon: <PiggyBank size={20} /> }
       ]
     }
   ];

@@ -9,6 +9,8 @@ import UserManagement from "../pages/admin/user-management";
 import GameAnalytics from "../pages/admin/game-analytics";
 import Statistics from "../pages/admin/game-analytics/statistics";
 import Bills from "../pages/admin/water-usage-analytics/bills";
+import Saved from "../pages/admin/water-usage-analytics/saved";
+import Predictions from "../pages/admin/water-usage-analytics/predictions";
 import Inventory from "../pages/admin/game-analytics/inventory";
 import ProtectedRoute from "./middleware/ProtectedRoute";
 import "./index.css";
@@ -61,6 +63,22 @@ function App() {
           element={
             <ProtectedRoute>
               <Bills />
+            </ProtectedRoute>
+          }
+        />
+            <Route
+          path="/Predictions"
+          element={
+            <ProtectedRoute>
+              <Predictions />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/Saved"
+          element={
+            <ProtectedRoute>
+              <Saved />
             </ProtectedRoute>
           }
         />

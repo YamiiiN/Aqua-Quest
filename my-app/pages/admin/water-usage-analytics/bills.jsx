@@ -3,12 +3,28 @@ import AdminLayout from '/pages/admin/layout';
 import WaterConsumptionTrend from '../../components/WaterConsumptionTrendChart';
 import WaterBillCategoriesChart from '../../components/WaterBillCategoriesChart';
 import TotalWaterBillUploads from '../../components/TotalWaterBillUploadsChart';
+import WaterConsumptionScatterChart from "../../components/WaterConsumptionScatterChart";
 
 export default function WaterUsageAnalytics() {
   const [waterConsumptionData, setWaterConsumptionData] = useState([]);
   const [waterBillCategoriesData, setWaterBillCategoriesData] = useState([]);
   const [totalWaterBillUploadsData, setTotalWaterBillUploadsData] = useState([]);
+   const [scatterData, setScatterData] = useState([]);
+useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:5000/api/admin/average-consumption"
+        );
+        const data = await response.json();
+        setScatterData(data.scatterData);
+      } catch (error) {
+        console.error("Error fetching average consumption:", error);
+      }
+    };
 
+    fetchData();
+  }, []);
   useEffect(() => {
     fetch("https://aqua-quest-backend-deployment.onrender.com/api/admin/water-consumption-trend")
       .then((response) => response.json())
@@ -43,7 +59,7 @@ export default function WaterUsageAnalytics() {
           Track water consumption and billing trends.
         </p>
       </div>
-
+      <hr className="my-6 border-t-2 border-gray-300" />
       <div className="p-6 min-h-screen">
         <div className="flex flex-wrap -mx-2">
           <div className="w-full md:w-1/2 px-2">
@@ -53,8 +69,14 @@ export default function WaterUsageAnalytics() {
             <WaterBillCategoriesChart billCategories={waterBillCategoriesData} />
           </div>
         </div>
-        <div className="mt-4">
+        <div className="flex flex-wrap -mx-2">
+          
+          <div className="w-full md:w-1/2 px-2">
+          <WaterConsumptionScatterChart scatterData={scatterData} />
+          </div>
+          <div className="w-full md:w-1/2 px-2">
           <TotalWaterBillUploads waterBillData={totalWaterBillUploadsData} />
+          </div>
         </div>
       </div>
     </AdminLayout>

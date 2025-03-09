@@ -6,6 +6,7 @@ import PaginationControls from "../components/PaginationControls";
 import StatusModal from "../components/StatusModal";
 import GraphModal from "../components/GraphModal";
 import WaterConsumptionScatterChart from "../components/WaterConsumptionScatterChart";
+import PlayerEngagementChart from "../components/PlayerEngagementChart"; // Import the new component
 
 export default function UserManagement() {
   const [users, setUsers] = useState([]);
@@ -21,13 +22,26 @@ export default function UserManagement() {
   const [barChartData, setBarChartData] = useState([]);
   const [lineChartData, setLineChartData] = useState([]);
   const [scatterData, setScatterData] = useState([]);
+  const [lastFiveUsers, setLastFiveUsers] = useState([]); // State for last five users
   const BLUE_SHADES = ["#1E3A8A", "#2563EB", "#3B82F6", "#60A5FA", "#93C5FD"];
+  const [playerEngagementData, setPlayerEngagementData] = useState([]);
+
+  useEffect(() => {
+    fetch(
+      "https://aqua-quest-backend-deployment.onrender.com/api/admin/player-engagement"
+    )
+      .then((response) => response.json())
+      .then((data) => setPlayerEngagementData(data))
+      .catch((error) =>
+        console.error("Error fetching player engagement:", error)
+      );
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://aqua-quest-backend-deployment.onrender.com/api/admin/average-consumption"
+          "http://localhost:5000/api/admin/average-consumption"
         );
         const data = await response.json();
         setScatterData(data.scatterData);
@@ -53,6 +67,22 @@ export default function UserManagement() {
     };
 
     fetchUsers();
+  }, []);
+
+  useEffect(() => {
+    const fetchLastFiveUsers = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:5000/api/admin/last-five"
+        );
+        const data = await response.json();
+        setLastFiveUsers(data.users);
+      } catch (error) {
+        console.error("Error fetching last five users:", error);
+      }
+    };
+
+    fetchLastFiveUsers();
   }, []);
 
   const handleUpdateStatus = async (userId, newStatus) => {
@@ -172,9 +202,36 @@ export default function UserManagement() {
           Manage and monitor user accounts, permissions, and activity logs.
         </p>
       </div>
-      <WaterConsumptionScatterChart scatterData={scatterData} />
+      <hr className="my-6 border-t-2 border-gray-300" />
+      <div className="flex flex-wrap">
+        <div className="w-full lg:w-3/4 p-4">
+          <PlayerEngagementChart playerEngagementData={playerEngagementData} />
+        </div>
+        <div className="w-full lg:w-1/4 p-4">
+          <div className="bg-white p-4 rounded-lg shadow-lg">
+            <h2 className="text-2xl font-bold mb-4">Last 5 Users</h2>
+            <ul className="space-y-4">
+              {lastFiveUsers.map((user) => (
+                <li key={user._id} className="mb-2 p-2 border-b border-gray-200 flex justify-between">
+                  <div>
+                    <p className="font-semibold">{user.first_name} {user.last_name}</p>
+                    <p className="text-sm text-gray-600">{user.email}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">{new Date(user.createdAt).toLocaleDateString()}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
       <div className="p-6 min-h-screen">
-        <SearchBar search={search} setSearch={setSearch} setCurrentPage={setCurrentPage} />
+        <SearchBar
+          search={search}
+          setSearch={setSearch}
+          setCurrentPage={setCurrentPage}
+        />
         <UserTable
           displayedUsers={displayedUsers}
           sortBy={sortBy}

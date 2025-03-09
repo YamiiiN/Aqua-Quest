@@ -1,4 +1,3 @@
-// filepath: c:\Users\Danniel\Documents\GitHub\Aqua-Quest\my-app\pages\admin\dashboard.jsx
 import React, { useEffect, useState } from "react";
 import AdminLayout from "/pages/admin/layout";
 import TotalUsersStat from "../components/TotalUsersStat";
@@ -8,7 +7,7 @@ import AvgSavingsPerUserStat from "../components/AvgSavingsPerUserStat";
 import TotalWaterBillUploadsChart from "../components/TotalWaterBillUploadsChart";
 import TotalMoneySavedOverTimeChart from "../components/TotalMoneySavedOverTimeChart";
 import WaterConsumptionTrendChart from "../components/WaterConsumptionTrendChart";
-import WaterBillCategoriesChart from "../components/WaterBillCategoriesChart";
+import RadarChartInventory from "../components/RadarChartInventory";
 import PredictionAccuracyChart from "../components/PredictionAccuracyChart";
 
 export default function AdminDashboard() {
@@ -25,6 +24,7 @@ export default function AdminDashboard() {
     overestimated: 0,
     underestimated: 0,
   });
+  const [radarChartData, setRadarChartData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,6 +39,7 @@ export default function AdminDashboard() {
           consumptionRes,
           moneySavedRes,
           predictionAccuracyRes,
+          radarChartRes,
         ] = await Promise.all([
           fetch(
             "https://aqua-quest-backend-deployment.onrender.com/api/admin/total-users"
@@ -59,17 +60,17 @@ export default function AdminDashboard() {
           ),
           fetch("https://aqua-quest-backend-deployment.onrender.com/api/admin/total-money-saved-over-time"),
           fetch("https://aqua-quest-backend-deployment.onrender.com/api/admin/prediction-accuracy"),
+          fetch("http://localhost:5000/api/admin/inventory-stats"), // Corrected URL for radar chart data
         ]);
 
         if (!billDataRes.ok) throw new Error(`HTTP ${billDataRes.status}`);
-        if (!consumptionRes.ok)
-          throw new Error(`HTTP ${consumptionRes.status}`);
+        if (!consumptionRes.ok) throw new Error(`HTTP ${consumptionRes.status}`);
 
         const waterBillDataJson = await billDataRes.json();
         const waterConsumptionDataJson = await consumptionRes.json();
         const totalMoneySavedOverTimeJson = await moneySavedRes.json();
         const predictionAccuracyJson = await predictionAccuracyRes.json();
-
+        const radarChartDataJson = await radarChartRes.json();
         // Ensure waterBillData is an array before setting state
         setWaterBillData(
           Array.isArray(waterBillDataJson) ? waterBillDataJson : []
@@ -85,7 +86,7 @@ export default function AdminDashboard() {
             : []
         );
         setPredictionAccuracy(predictionAccuracyJson);
-
+        setRadarChartData(radarChartDataJson);
         setTotalUsers((await usersRes.json()).totalUsers);
         setTotalWaterBills((await billsRes.json()).totalWaterBills);
         setTotalSavedCost((await savedCostRes.json()).totalSavedCost);
@@ -110,7 +111,7 @@ export default function AdminDashboard() {
           rankings.
         </p>
       </div>
-
+      <hr className="my-6 border-t-2 border-gray-300" />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <TotalUsersStat totalUsers={totalUsers} />
         <TotalMoneySavedStat totalSavedCost={totalSavedCost} />
@@ -119,27 +120,36 @@ export default function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-        <TotalWaterBillUploadsChart waterBillData={waterBillData} />
-        <TotalMoneySavedOverTimeChart
-          totalMoneySavedOverTime={totalMoneySavedOverTime}
-        />
+        <div>
+          <div className="flex justify-between items-center">
+            <a href="/bills" className="text-blue-500">See More...</a>
+          </div>
+          <WaterConsumptionTrendChart waterConsumptionData={waterConsumptionData} />
+        </div>
+        <div>
+          <div className="flex justify-between items-center">
+            <a href="/inventory" className="text-blue-500">See More...</a>
+          </div>
+          <RadarChartInventory data={radarChartData} />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mt-6">
-        <div className="md:col-span-3">
-          <WaterConsumptionTrendChart
-            waterConsumptionData={waterConsumptionData}
-          />
-        </div>
         <div className="md:col-span-2">
-          <WaterBillCategoriesChart billCategories={billCategories} />
+          <div className="flex justify-between items-center">
+
+            <a href="/predictions" className="text-blue-500">See More...</a>
+          </div>
+          <PredictionAccuracyChart data={predictionAccuracy} />
+        </div>
+        <div className="md:col-span-3">
+          <div className="flex justify-between items-center">
+
+            <a href="/saved" className="text-blue-500">See More...</a>
+          </div>
+          <TotalMoneySavedOverTimeChart totalMoneySavedOverTime={totalMoneySavedOverTime} />
         </div>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-        <PredictionAccuracyChart data={predictionAccuracy} />
-      </div>
-      
     </AdminLayout>
   );
 }

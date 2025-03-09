@@ -17,12 +17,14 @@ export default function Ranking() {
   const [sortedColumn, setSortedColumn] = useState(null);
   const [sortOrder, setSortOrder] = useState("desc");
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const playersPerPage = 10;
 
   useEffect(() => {
     setLoading(true);
     setError(null);
 
-    fetch("https://aqua-quest-backend-deployment.onrender.com/api/gamestat/leaderboard")
+    fetch("http://localhost:5000/api/gamestat/leaderboard")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch leaderboard data.");
@@ -63,6 +65,24 @@ export default function Ranking() {
     const filtered = players.filter((player) => player.name.toLowerCase().includes(searchQuery.toLowerCase()));
     setFilteredPlayers(filtered);
   }, [searchQuery, players]);
+
+  // Pagination logic
+  const indexOfLastPlayer = currentPage * playersPerPage;
+  const indexOfFirstPlayer = indexOfLastPlayer - playersPerPage;
+  const currentPlayers = filteredPlayers.slice(indexOfFirstPlayer, indexOfLastPlayer);
+  const totalPages = Math.ceil(filteredPlayers.length / playersPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -121,9 +141,9 @@ export default function Ranking() {
                   </th>
                 </tr>
               </thead>
-              <tbody>\
-                {filteredPlayers.map((player, index) => {
-                  const rank = sortOrder === "desc" ? index + 1 : filteredPlayers.length - index;
+              <tbody>
+                {currentPlayers.map((player, index) => {
+                  const rank = sortOrder === "desc" ? indexOfFirstPlayer + index + 1 : filteredPlayers.length - indexOfFirstPlayer - index;
                   return (
                     <tr key={index} className="text-lg font-medium hover:bg-blue-500 hover:text-white transition-all">
                       <td className="p-3 text-center">
@@ -142,6 +162,23 @@ export default function Ranking() {
                 })}
               </tbody>
             </table>
+            <div className="flex justify-between mt-4">
+              <button
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-300"
+                onClick={handlePreviousPage}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </button>
+              <span className="text-lg">{`Page ${currentPage} of ${totalPages}`}</span>
+              <button
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-300"
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
+            </div>
           </div>
         )}
       </div>
