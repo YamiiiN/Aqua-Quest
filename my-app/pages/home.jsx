@@ -172,7 +172,7 @@ export default function Home() {
         className="bg-white flex flex-col lg:flex-row items-center justify-center flex-grow px-10 py-16 space-y-10 lg:space-y-0 lg:space-x-16"
       >
         {/* Phone Mockup */}
-        <div className="relative w-[600px] h-[400px] rounded-[40px] overflow-hidden">
+        <div className="relative w-full max-w-[600px] h-auto aspect-w-3 aspect-h-2 rounded-[40px] overflow-hidden">
           <img
             src="/images/phone.jpg"
             alt="Phone Mockup"
@@ -182,7 +182,7 @@ export default function Home() {
             <img
               src="/images/AQLogo.png"
               alt="Water Droplet Logo"
-              className="w-60 h-50"
+              className="w-60 h-60"
             />
           </div>
         </div>
