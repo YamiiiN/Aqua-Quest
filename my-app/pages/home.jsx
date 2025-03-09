@@ -47,7 +47,7 @@ export default function Home() {
 
           {/* Right Side: 3D Model */}
           <div className="w-full lg:w-1/2 flex justify-center items-center mt-10 lg:mt-0">
-            <div className="w-[700px] h-[700px] sm:w-[800px] sm:h-800px] lg:w-[900px] lg:h-[900px]">
+            <div className="w-full h-full max-w-[700px] max-h-[700px] sm:max-w-[800px] sm:max-h-[800px] lg:max-w-[900px] lg:max-h-[900px]">
               <iframe
                 src="https://my.spline.design/hand19copy-4e6083997cd6cca33be95744523a2734/"
                 width="100%"
@@ -78,7 +78,7 @@ export default function Home() {
             {
               img: "tracking.png",
               title: "Real-Time Usage Tracking",
-              text: "Monitor your montly water consumption with live analytics.",
+              text: "Monitor your monthly water consumption with live analytics.",
             },
             {
               img: "conservation.png",
@@ -113,14 +113,14 @@ export default function Home() {
       {/* 🎮 Water Pollution Fighting Game Section */}
       <div className="w-full bg-gradient-to-br from-blue-900 via-blue-700 to-blue-500 py-16 px-6 flex flex-col items-center">
         <h2 className="text-3xl md:text-4xl font-extrabold text-white text-center mb-6 drop-shadow-lg">
-          Join the Battle Against Water Pollution! 
+          Join the Battle Against Water Pollution!
         </h2>
 
         <p className="text-white text-lg text-center max-w-3xl mt-6">
           Aqua Quest isn’t just about water bill predictions—it’s also an
           exciting **adventure game**! Join forces to **defeat pollution
           monsters** , **restore clean water sources**, and **become an
-          eco-warrior**! 
+          eco-warrior**!
         </p>
 
         {/* Features Section */}
@@ -184,7 +184,6 @@ export default function Home() {
               alt="Water Droplet Logo"
               className="w-80 h-70"
             />
-
           </div>
         </div>
 
