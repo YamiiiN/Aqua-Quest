@@ -48,7 +48,7 @@ export default function TotalMoneySaved() {
                 {topUsers.map((user) => (
                   <li key={user.userId} className="flex justify-between">
                     <span>{user.userName}</span>
-                    <span>${user.totalSavedCost.toFixed(2)}</span>
+                    <span>₱{user.totalSavedCost.toFixed(2)}</span>
                   </li>
                 ))}
               </ul>
