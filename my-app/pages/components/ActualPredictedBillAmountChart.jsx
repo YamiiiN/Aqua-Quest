@@ -47,8 +47,8 @@ const ActualPredictedBillAmountChart = () => {
         <div className="custom-tooltip bg-white p-2 border border-gray-300 rounded">
           <p className="label">{`Month: ${label}`}</p>
           <p className="intro">{`User: ${payload[0].payload.userName}`}</p>
-          <p className="actual">{`Actual Bill Amount: ${payload[0].value}`}</p>
-          <p className="predicted">{`Predicted Bill Amount: ${payload[1].value}`}</p>
+          <p className="actual">{`Actual Bill Amount: ${payload[0].value.toFixed(2)}`}</p>
+          <p className="predicted">{`Predicted Bill Amount: ${payload[1].value.toFixed(2)}`}</p>
         </div>
       );
     }

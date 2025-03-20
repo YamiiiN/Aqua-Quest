@@ -245,7 +245,7 @@ export default function Ranking() {
                         {player.kills?.PinsalangKinamada || 0}
                       </td>
                       <td className="p-3">{player.overallKills || 0}</td>
-                      <td className="p-3">{player.powerLevel || 0}</td>
+                      <td className="p-3">{(player.powerLevel || 0).toFixed(2)}</td>
                     </tr>
                   );
                 })}
