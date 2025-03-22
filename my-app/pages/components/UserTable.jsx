@@ -8,28 +8,35 @@ function UserTable({ displayedUsers, handleSort, sortBy, sortOrder, openStatusMo
         <thead>
           <tr className="bg-blue-700 text-white text-sm uppercase">
             <th
-              className="px-6 py-3 w-1/4 cursor-pointer first:rounded-tl-lg"
+              className="px-6 py-3 w-1/6 cursor-pointer first:rounded-tl-lg"
               onClick={() => handleSort("first_name")}
             >
               Name{" "}
               {sortBy === "first_name" && (sortOrder === "asc" ? "↑" : "↓")}
             </th>
-            <th className="px-6 py-3 w-1/4">Email</th>
+            <th className="px-6 py-3 w-1/6">Email</th>
             <th
-              className="px-6 py-3 w-1/6 cursor-pointer"
+              className="px-6 py-3 w-1/12 cursor-pointer"
               onClick={() => handleSort("role")}
             >
               Role {sortBy === "role" && (sortOrder === "asc" ? "↑" : "↓")}
             </th>
             <th
-              className="px-6 py-3 w-1/6 cursor-pointer"
+              className="px-6 py-3 w-1/12 cursor-pointer"
               onClick={() => handleSort("status")}
             >
               Status{" "}
               {sortBy === "status" && (sortOrder === "asc" ? "↑" : "↓")}
             </th>
-            <th className="px-6 py-3 w-1/6">Actions</th>
-            <th className="px-6 py-3">User Water Usage</th>
+            <th
+              className="px-6 py-3 w-1/12 cursor-pointer"
+              onClick={() => handleSort("gender")}
+            >
+              Gender{" "}
+              {sortBy === "gender" && (sortOrder === "asc" ? "↑" : "↓")}
+            </th>
+            <th className="px-6 py-3 w-1/12">Actions</th>
+            <th className="px-6 py-3 w-1/12">User Water Usage</th>
             <th className="px-6 py-3 w-1/6 last:rounded-tr-lg">
               Date Created
             </th>
@@ -58,6 +65,7 @@ function UserTable({ displayedUsers, handleSort, sortBy, sortOrder, openStatusMo
                     <XCircle className="text-red-500" size={20} />
                   )}
                 </td>
+                <td className="px-6 py-4 text-gray-600">{user.gender}</td>
                 <td className="px-6 py-4">
                   <button
                     className="text-blue-600 hover:text-blue-800"
@@ -82,7 +90,7 @@ function UserTable({ displayedUsers, handleSort, sortBy, sortOrder, openStatusMo
           ) : (
             <tr>
               <td
-                colSpan="7"
+                colSpan="8"
                 className="px-6 py-4 text-center text-gray-500 bg-gray-50 rounded-b-lg"
               >
                 No users found.
