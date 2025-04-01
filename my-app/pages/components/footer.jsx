@@ -16,7 +16,7 @@ export default function Footer() {
                 </div>
 
                 {/* Social Media Links */}
-                <div className="flex space-x-4 mt-4 md:mt-0">
+                {/* <div className="flex space-x-4 mt-4 md:mt-0">
                     <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
                         <img src="/images/facebook.png" alt="Facebook" className="h-6 w-6"/>
                     </a>
@@ -26,7 +26,7 @@ export default function Footer() {
                     <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
                         <img src="/images/instagram.png" alt="Instagram" className="h-6 w-6"/>
                     </a>
-                </div>
+                </div> */}
             </div>
 
             {/* Copyright Section */}
