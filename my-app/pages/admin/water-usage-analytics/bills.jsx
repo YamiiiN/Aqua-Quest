@@ -77,26 +77,22 @@ export default function WaterUsageAnalytics() {
       </div>
       <hr className="my-6 border-t-2 border-gray-300" />
       <div className="p-6 min-h-screen">
-        <div className="flex flex-wrap -mx-2">
-          <div className="w-full md:w-1/2 px-2">
-            <WaterConsumptionTrend
-              waterConsumptionData={waterConsumptionData}
-            />
-          </div>
-          <div className="w-full md:w-1/2 px-2">
-            <WaterBillCategoriesChart
-              billCategories={waterBillCategoriesData}
-            />
-          </div>
-        </div>
-        <div className="flex flex-wrap -mx-2">
-          <div className="w-full md:w-1/2 px-2">
-            <WaterConsumptionScatterChart scatterData={scatterData} />
-          </div>
-          <div className="w-full md:w-1/2 px-2">
-            <TotalWaterBillUploads waterBillData={totalWaterBillUploadsData} />
-          </div>
-        </div>
+      <div className="flex flex-wrap -mx-2">
+  <div className="w-full md:w-1/2 px-2">
+    <WaterConsumptionTrend waterConsumptionData={waterConsumptionData} />
+  </div>
+  <div className="w-full md:w-1/2 px-2">
+    <WaterBillCategoriesChart billCategories={waterBillCategoriesData} />
+  </div>
+</div>
+<div className="flex flex-wrap -mx-2 mt-4"> {/* Added mt-4 here */}
+  <div className="w-full md:w-1/2 px-2">
+    <WaterConsumptionScatterChart scatterData={scatterData} />
+  </div>
+  <div className="w-full md:w-1/2 px-2">
+    <TotalWaterBillUploads waterBillData={totalWaterBillUploadsData} />
+  </div>
+</div>
       </div>
     </AdminLayout>
   );
