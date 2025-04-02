@@ -4,7 +4,7 @@ import Navbar from "./components/navbar";
 import Footer from "./components/footer";
 
 export default function Home() {
-  const apkDownloadUrl = "/AquaQuest Beta1.1.apk";
+  const apkDownloadUrl = "/AquaQuest defense apk.apk";
 
   return (
     <div className="min-h-screen bg-blue-100 flex flex-col">
